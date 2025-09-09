@@ -1,0 +1,36 @@
+# This file is deprecated as per GLEP 56 in favor of metadata.xml. Please add
+# your descriptions to your package's metadata.xml ONLY.
+# * generated automatically using egencache *
+
+app-misc/ca-certificates:cacert - Include root certificates from CAcert (http://www.cacert.org/) and Software in the Public Interest (http://www.spi-inc.org/)
+net-misc/dhcpcd:embedded - Embed the definitions of dhcp options in the dhcpcd executable
+sys-apps/lm_sensors:contrib - Installs user contributed configuration files so you don't need to find settings on your own for your system if somebody else has already created such a configuration for sensors/mainboards you are using.
+sys-apps/lm_sensors:sensord - Enable sensord - a daemon that can be used to periodically log sensor readings from hardware health-monitoring chips
+sys-firmware/edk2-ovmf:binary - Use pre-built binaries
+sys-firmware/intel-microcode:hostonly - only install ucode(s) supported by currently available (=online) processor(s)
+sys-firmware/intel-microcode:initramfs - install a small initramfs for use with CONFIG_MICROCODE_EARLY
+sys-firmware/intel-microcode:split-ucode - install the split binary ucode files (used by the kernel directly)
+sys-firmware/intel-microcode:vanilla - install only microcode updates from Intel's official microcode tarball
+sys-firmware/ipxe:binary - Use pre-built binaries
+sys-firmware/ipxe:efi - Build an EFI program for using PXE
+sys-firmware/ipxe:iso - Build a bootable ISO for using PXE
+sys-firmware/ipxe:lkrn - Build a linux kernel bootable file for using with grub/etc...
+sys-firmware/ipxe:qemu - Build the required PXE ROM images for app-emulation/qemu
+sys-firmware/ipxe:undi - Build a Universal Network Device Interface driver chainloading your existing PXE NIC into iPXE
+sys-firmware/ipxe:usb - Build a bootable USB image for using PXE
+sys-firmware/ipxe:vmware - Build the PXE ROM images that VMWare uses
+sys-firmware/seabios:binary - Use official upstream pre-built binaries
+sys-firmware/seabios:seavgabios - Include SeaVGABIOS binaries (replacement for vgabios)
+sys-firmware/sgabios:binary - Use pre-built binaries
+sys-firmware/sigrok-firmware-fx2lafw:binary - Use official upstream pre-built binaries
+sys-firmware/vgabios:binary - Use official upstream pre-built binaries (only default and cirrus images)
+sys-kernel/linux-firmware:savedconfig - Allows individual selection of firmware files
+sys-libs/timezone-data:leaps_timezone - Install the set of "right" timezones; these timezones include leap seconds when counting seconds since the epoch (while POSIX does not) as they are based on the TAI (International Atomic Time) clock
+x11-drivers/nvidia-drivers:X - Install the X.org driver, OpenGL libraries, XvMC libraries, and VDPAU libraries
+x11-drivers/nvidia-drivers:compat - Install non-GLVND libGL for backwards compatibility
+x11-drivers/nvidia-drivers:driver - Install the kernel driver module
+x11-drivers/nvidia-drivers:gtk3 - Install nvidia-settings with support for GTK+ 3
+x11-drivers/nvidia-drivers:kms - Enable support for kernel mode setting (KMS)
+x11-drivers/nvidia-drivers:pax_kernel - PaX patches from the PaX project
+x11-drivers/nvidia-drivers:tools - Install additional tools such as nvidia-settings
+x11-drivers/nvidia-drivers:uvm - Install the Unified Memory kernel module (nvidia-uvm) for sharing memory between CPU and GPU in CUDA programs

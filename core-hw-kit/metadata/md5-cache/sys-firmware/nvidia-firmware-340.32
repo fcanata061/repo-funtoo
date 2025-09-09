@@ -1,0 +1,12 @@
+DEFINED_PHASES=compile install setup unpack
+DEPEND=|| ( >=dev-lang/python-2.7.5-r2:2.7 ) >=app-portage/elt-patches-20170317
+DESCRIPTION=Kernel and mesa firmware for nouveau (video accel and pgraph)
+EAPI=5
+HOMEPAGE=https://nouveau.freedesktop.org/wiki/VideoAcceleration/
+KEYWORDS=~amd64 ~arm64 ~x86
+LICENSE=MIT NVIDIA-r2
+RESTRICT=bindist mirror
+SLOT=0
+SRC_URI=http://us.download.nvidia.com/XFree86/Linux-x86/340.32/NVIDIA-Linux-x86-340.32.run https://raw.github.com/imirkin/re-vp2/96641bfebb2547402b2145fcf0e3116410f0da87/extract_firmware.py -> nvidia_extract_firmware-340.32.py
+_eclasses_=epatch	8233751dc5105a6ae8fcd86ce2bb0247	epunt-cxx	e99babeaa7d98c1caaa6a61a79902210	estack	5ac2a138d0b33354b764d84f9e835db8	eutils	1fb064d93b3ffd05c2fb19ef430a4aa1	ltprune	2770eed66a9b8ef944714cd0e968182e	multilib	97f470f374f2e94ccab04a2fb21d811e	python-any-r1	3b48a54b2b31a6bc928e459fec3adb54	python-utils-r1	b5fdfa15cbe2f6299a482bf5d0c5925d	toolchain-funcs	6eb35f81556258a4bc9182ad3dfd58ee	unpacker	f40f7b4bd5aa88c2a4ba7b0d1e0ded70
+_md5_=a565209d9bcec4155e5bd5616c5f022c

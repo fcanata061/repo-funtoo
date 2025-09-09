@@ -1,0 +1,10 @@
+DEFINED_PHASES=-
+DESCRIPTION=The Funtoo IBus IME Backends meta package.
+EAPI=7
+HOMEPAGE=https://www.funtoo.org/Funtoo:Multilingual
+IUSE=ime_backends_bamboo ime_backends_unikey ime_backends_anthy ime_backends_skk ime_backends_libpinyin ime_backends_chewing ime_backends_rime ime_backends_hangul ime_backends_m17n ime_backends_table
+KEYWORDS=*
+LICENSE=metapackage
+RDEPEND=ime_backends_bamboo? ( app-i18n/ibus-bamboo ) ime_backends_unikey? ( app-i18n/ibus-unikey ) ime_backends_anthy? ( app-i18n/ibus-anthy ) ime_backends_skk? ( app-i18n/ibus-skk ) ime_backends_libpinyin? ( app-i18n/ibus-libpinyin ) ime_backends_chewing? ( app-i18n/ibus-chewing ) ime_backends_rime? ( app-i18n/ibus-rime ) ime_backends_hangul? ( app-i18n/ibus-hangul ) ime_backends_m17n? ( app-i18n/ibus-m17n ) ime_backends_table? ( app-i18n/ibus-table app-i18n/ibus-table-chinese app-i18n/ibus-table-others app-i18n/ibus-table-extraphrase )
+SLOT=0
+_md5_=2ea65c3c8af28dd704c87827f5ec3622

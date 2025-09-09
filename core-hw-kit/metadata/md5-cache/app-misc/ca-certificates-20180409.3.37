@@ -1,0 +1,13 @@
+DEFINED_PHASES=compile install postinst prepare setup unpack
+DEPEND=|| ( dev-lang/python:3.6 dev-lang/python:3.5 dev-lang/python:3.4 dev-lang/python:3.7 >=dev-lang/python-2.7.5-r2:2.7 ) >=app-portage/elt-patches-20170317
+DESCRIPTION=Common CA Certificates PEM files
+EAPI=6
+HOMEPAGE=https://packages.debian.org/sid/ca-certificates
+IUSE=cacert
+KEYWORDS=alpha amd64 arm arm64 hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 ~ppc-aix ~x64-cygwin ~amd64-fbsd ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~m68k-mint ~sparc-solaris ~sparc64-solaris ~x64-solaris ~x86-solaris ~x86-winnt
+LICENSE=MPL-1.1
+RDEPEND=app-misc/c_rehash sys-apps/debianutils
+SLOT=0
+SRC_URI=mirror://debian/pool/main/c/ca-certificates/ca-certificates_20180409.tar.xz https://archive.mozilla.org/pub/security/nss/releases/NSS_3_37_RTM/src/nss-3.37.tar.gz cacert? ( https://dev.gentoo.org/~axs/distfiles/nss-cacert-class1-class3.patch )
+_eclasses_=eapi7-ver	d97a56a62c7df8614afddcb25f5ff00f	epatch	8233751dc5105a6ae8fcd86ce2bb0247	epunt-cxx	e99babeaa7d98c1caaa6a61a79902210	estack	5ac2a138d0b33354b764d84f9e835db8	eutils	1fb064d93b3ffd05c2fb19ef430a4aa1	ltprune	2770eed66a9b8ef944714cd0e968182e	multilib	97f470f374f2e94ccab04a2fb21d811e	python-any-r1	3b48a54b2b31a6bc928e459fec3adb54	python-utils-r1	b5fdfa15cbe2f6299a482bf5d0c5925d	toolchain-funcs	6eb35f81556258a4bc9182ad3dfd58ee
+_md5_=c5447feae1f6ad06fc00097f5e605df3

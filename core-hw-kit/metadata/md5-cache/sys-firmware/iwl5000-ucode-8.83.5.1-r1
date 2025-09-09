@@ -1,0 +1,12 @@
+DEFINED_PHASES=install pretend setup
+DESCRIPTION=Intel (R) Wireless WiFi Link 5100/5300 ucode
+EAPI=5
+HOMEPAGE=http://linuxwireless.org/en/users/Drivers/iwlwifi
+IUSE=kernel_linux
+KEYWORDS=amd64 x86
+LICENSE=ipw3945
+RDEPEND=!=sys-firmware/iwl5000-ucode-8.83.5.1
+SLOT=2
+SRC_URI=http://linuxwireless.org/attachments/en/users/Drivers/iwlwifi/iwlwifi-5000-ucode-8.83.5.1-1.tgz
+_eclasses_=eapi7-ver	d97a56a62c7df8614afddcb25f5ff00f	linux-info	953c3b1c472dcadbf62098a9301327f2	multilib	97f470f374f2e94ccab04a2fb21d811e	toolchain-funcs	6eb35f81556258a4bc9182ad3dfd58ee
+_md5_=b136d072874be75b212e8e5713bc8020
