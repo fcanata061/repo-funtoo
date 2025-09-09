@@ -1,0 +1,13 @@
+DEFINED_PHASES=configure install postinst postrm
+DEPEND=sys-libs/ncurses:0= app-eselect/eselect-vi X? ( >=x11-libs/libX11-1.0.0 >=x11-libs/libXt-1.0.0 >=x11-libs/libXpm-3.5.4.2 >=x11-libs/libXft-2.1.8.2 ) X? ( x11-base/xorg-proto ) virtual/pkgconfig >=app-portage/elt-patches-20170317
+DESCRIPTION=A vi/ex clone
+EAPI=6
+HOMEPAGE=http://elvis.the-little-red-haired-girl.org
+IUSE=X
+KEYWORDS=~amd64 ~ppc ~ppc64 ~x86 ~ppc-macos ~x86-macos ~m68k-mint ~sparc-solaris
+LICENSE=Artistic
+RDEPEND=sys-libs/ncurses:0= app-eselect/eselect-vi X? ( >=x11-libs/libX11-1.0.0 >=x11-libs/libXt-1.0.0 >=x11-libs/libXpm-3.5.4.2 >=x11-libs/libXft-2.1.8.2 )
+SLOT=0
+SRC_URI=ftp://ftp.cs.pdx.edu/pub/elvis/elvis-2.2_0.tar.gz
+_eclasses_=epatch	8233751dc5105a6ae8fcd86ce2bb0247	epunt-cxx	e99babeaa7d98c1caaa6a61a79902210	estack	5ac2a138d0b33354b764d84f9e835db8	eutils	1fb064d93b3ffd05c2fb19ef430a4aa1	ltprune	2770eed66a9b8ef944714cd0e968182e	multilib	97f470f374f2e94ccab04a2fb21d811e	toolchain-funcs	6eb35f81556258a4bc9182ad3dfd58ee	versionator	c80ccf29e90adea7c5cae94b42eb76d0
+_md5_=12a65562c8e99fe728b5f2dbc52d9c3c

@@ -1,0 +1,12 @@
+DEFINED_PHASES=compile configure install postinst postrm prepare setup unpack
+DEPEND=>=virtual/emacs-23
+DESCRIPTION=Emacs package for talking to a dictionary server
+EAPI=5
+HOMEPAGE=http://www.myrkr.in-berlin.de/dictionary/index.html
+KEYWORDS=amd64 ppc x86
+LICENSE=GPL-2+
+RDEPEND=>=virtual/emacs-23
+SLOT=0
+SRC_URI=http://www.myrkr.in-berlin.de/dictionary/dictionary-1.10.tar.gz
+_eclasses_=elisp	e1ffe92f2ea23bdc3ff9304ed2c26ecc	elisp-common	23f47b2e1de7abf387105eddd1318738	epatch	8233751dc5105a6ae8fcd86ce2bb0247	estack	5ac2a138d0b33354b764d84f9e835db8
+_md5_=654aab74f3e37cd0b430041f780f3458

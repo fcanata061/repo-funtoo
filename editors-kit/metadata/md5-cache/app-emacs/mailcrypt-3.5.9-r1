@@ -1,0 +1,13 @@
+DEFINED_PHASES=compile configure install postinst postrm prepare setup unpack
+DEPEND=>=virtual/emacs-23 >=app-portage/elt-patches-20170317 !<sys-devel/gettext-0.18.1.1-r3 || ( >=sys-devel/automake-1.15:1.15 ) >=sys-devel/autoconf-2.69 >=sys-devel/libtool-2.4
+DESCRIPTION=Provides a simple interface to public key cryptography with OpenPGP
+EAPI=7
+HOMEPAGE=http://mailcrypt.sourceforge.net/
+KEYWORDS=amd64 ppc sparc x86
+LICENSE=GPL-2+
+RDEPEND=app-crypt/gnupg >=virtual/emacs-23
+RESTRICT=test
+SLOT=0
+SRC_URI=mirror://sourceforge/mailcrypt/mailcrypt-3.5.9.tar.gz
+_eclasses_=autotools	dc412f38566b91012efd58b9c203e6c3	elisp	e1ffe92f2ea23bdc3ff9304ed2c26ecc	elisp-common	23f47b2e1de7abf387105eddd1318738	libtool	e32ea84bf82cf8987965b574672dba93	multilib	97f470f374f2e94ccab04a2fb21d811e	readme.gentoo-r1	2b27b7fcc73685ec7e0456c3b48a2fff	toolchain-funcs	6eb35f81556258a4bc9182ad3dfd58ee
+_md5_=080640b282f2c3a81f615bd07e47c005

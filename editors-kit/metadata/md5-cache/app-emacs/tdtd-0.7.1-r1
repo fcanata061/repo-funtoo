@@ -1,0 +1,12 @@
+DEFINED_PHASES=compile install postinst postrm setup unpack
+DEPEND=app-arch/unzip >=virtual/emacs-23
+DESCRIPTION=Emacs Major Mode for SGML and XML DTDs
+EAPI=0
+HOMEPAGE=http://www.menteith.com/wiki/tdtd
+KEYWORDS=amd64 ppc sparc x86
+LICENSE=GPL-2
+RDEPEND=>=virtual/emacs-23
+SLOT=0
+SRC_URI=http://www.menteith.com/raw-attachment/wiki/tdtd/data/tdtd071.zip
+_eclasses_=elisp	e1ffe92f2ea23bdc3ff9304ed2c26ecc	elisp-common	23f47b2e1de7abf387105eddd1318738	epatch	8233751dc5105a6ae8fcd86ce2bb0247	estack	5ac2a138d0b33354b764d84f9e835db8
+_md5_=f8708119d34b07c40de6d2ac43e255cc

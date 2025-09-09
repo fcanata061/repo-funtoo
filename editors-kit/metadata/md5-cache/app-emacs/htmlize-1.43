@@ -1,0 +1,12 @@
+DEFINED_PHASES=compile configure install postinst postrm prepare setup unpack
+DEPEND=>=virtual/emacs-23
+DESCRIPTION=HTML-ize font-lock buffers in Emacs
+EAPI=4
+HOMEPAGE=https://www.emacswiki.org/emacs/Htmlize http://fly.srk.fer.hr/~hniksic/emacs/
+KEYWORDS=amd64 ppc x86
+LICENSE=GPL-2+
+RDEPEND=>=virtual/emacs-23
+SLOT=0
+SRC_URI=mirror://gentoo/htmlize-1.43.el.bz2
+_eclasses_=elisp	e1ffe92f2ea23bdc3ff9304ed2c26ecc	elisp-common	23f47b2e1de7abf387105eddd1318738	epatch	8233751dc5105a6ae8fcd86ce2bb0247	estack	5ac2a138d0b33354b764d84f9e835db8
+_md5_=b473dcc8260b44e56ffe5fb92afec84e

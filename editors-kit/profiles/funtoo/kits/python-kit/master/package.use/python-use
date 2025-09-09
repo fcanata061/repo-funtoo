@@ -1,0 +1,14 @@
+=app-vim/vimoutliner-0.4.0_p20180301 python_single_target_python2_7
+app-editors/atom python_single_target_python2_7
+app-editors/bluefish python_single_target_python2_7
+app-editors/pluma python_single_target_python2_7
+app-vim/automatictexplugin python_single_target_python2_7
+app-vim/colorv python_single_target_python2_7
+app-vim/easytags python_single_target_python2_7
+app-vim/notes python_single_target_python2_7
+app-vim/slimv python_single_target_python2_7
+app-vim/splice python_single_target_python2_7
+app-vim/vimcalc python_single_target_python2_7
+app-vim/vimpress python_single_target_python2_7
+app-vim/voom python_single_target_python2_7
+app-vim/youcompleteme python_single_target_python2_7

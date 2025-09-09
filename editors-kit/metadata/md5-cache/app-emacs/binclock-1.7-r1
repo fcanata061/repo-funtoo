@@ -1,0 +1,12 @@
+DEFINED_PHASES=compile configure install postinst postrm prepare setup unpack
+DEPEND=>=virtual/emacs-23
+DESCRIPTION=Display the current time using a binary clock
+EAPI=4
+HOMEPAGE=http://www.davep.org/emacs/
+KEYWORDS=~alpha amd64 ppc ppc64 ~sparc x86
+LICENSE=GPL-2
+RDEPEND=>=virtual/emacs-23
+SLOT=0
+SRC_URI=mirror://gentoo/binclock-1.7.tar.bz2
+_eclasses_=elisp	e1ffe92f2ea23bdc3ff9304ed2c26ecc	elisp-common	23f47b2e1de7abf387105eddd1318738	epatch	8233751dc5105a6ae8fcd86ce2bb0247	estack	5ac2a138d0b33354b764d84f9e835db8
+_md5_=47a8f55fcb7916a1c9f470a91e2b5093

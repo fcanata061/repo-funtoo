@@ -1,0 +1,85 @@
+# This file is deprecated as per GLEP 56 in favor of metadata.xml. Please add
+# your descriptions to your package's metadata.xml ONLY.
+# * generated automatically using egencache *
+
+app-editors/bluefish:gtk3 - Enable GTK3 interface (default)
+app-editors/bluefish:gucharmap - Enable gucharmap dictionary plugin
+app-editors/bluefish:python - Enable Python integration for zen-coding plugin
+app-editors/bluefish:spell - Enable spell checking capabilities via enchant library
+app-editors/emacs:athena - Enable the MIT Athena widget set (x11-libs/libXaw)
+app-editors/emacs:dynamic-loading - Enable loading of dynamic libraries at runtime
+app-editors/emacs:games - Support shared score files for games
+app-editors/emacs:gconf - Use gnome-base/gconf to read the system font name
+app-editors/emacs:gfile - Use gfile (dev-libs/glib) for file notification
+app-editors/emacs:gsettings - Use gsettings (dev-libs/glib) to read the system font name
+app-editors/emacs:gtk2 - Prefer version 2 of the GIMP Toolkit to version 3 (x11-libs/gtk+)
+app-editors/emacs:gtk3 - Prefer version 3 of the GIMP Toolkit to version 2 (x11-libs/gtk+)
+app-editors/emacs:gzip-el - Compress bundled Emacs Lisp source
+app-editors/emacs:imagemagick - Use media-gfx/imagemagick for image processing
+app-editors/emacs:libxml2 - Use dev-libs/libxml2 to parse XML instead of the internal Lisp implementations
+app-editors/emacs:mailutils - Retrieve e-mail using net-mail/mailutils instead of the internal movemail substitute
+app-editors/emacs:source - Install C source files and make them available for find-function
+app-editors/emacs:toolkit-scroll-bars - Use the selected toolkit's scrollbars in preference to Emacs' own scrollbars
+app-editors/emacs:wide-int - Prefer wide Emacs integers (typically 62-bit). This option has an effect only on architectures where "long" and "long long" types have different size.
+app-editors/emacs:xwidgets - Enable use of GTK widgets in Emacs buffers (requires GTK3)
+app-editors/emacs-vcs:athena - Enable the MIT Athena widget set (x11-libs/libXaw)
+app-editors/emacs-vcs:dynamic-loading - Enable loading of dynamic libraries at runtime
+app-editors/emacs-vcs:games - Support shared score files for games
+app-editors/emacs-vcs:gconf - Use gnome-base/gconf to read the system font name
+app-editors/emacs-vcs:gfile - Use gfile (dev-libs/glib) for file notification
+app-editors/emacs-vcs:gsettings - Use gsettings (dev-libs/glib) to read the system font name
+app-editors/emacs-vcs:gtk2 - Prefer version 2 of the GIMP Toolkit to version 3 (x11-libs/gtk+)
+app-editors/emacs-vcs:gzip-el - Compress bundled Emacs Lisp source
+app-editors/emacs-vcs:imagemagick - Use media-gfx/imagemagick for image processing
+app-editors/emacs-vcs:json - Compile with native JSON support using dev-libs/jansson
+app-editors/emacs-vcs:libxml2 - Use dev-libs/libxml2 to parse XML instead of the internal Lisp implementations
+app-editors/emacs-vcs:mailutils - Retrieve e-mail using net-mail/mailutils instead of the internal movemail substitute
+app-editors/emacs-vcs:source - Install C source files and make them available for find-function
+app-editors/emacs-vcs:threads - Add elisp threading support
+app-editors/emacs-vcs:toolkit-scroll-bars - Use the selected toolkit's scrollbars in preference to Emacs' own scrollbars
+app-editors/emacs-vcs:wide-int - Prefer wide Emacs integers (typically 62-bit). This option has an effect only on architectures where "long" and "long long" types have different size.
+app-editors/emacs-vcs:xwidgets - Enable use of GTK widgets in Emacs buffers (requires GTK3)
+app-editors/fe:sendmail - Send mail after editor abend
+app-editors/jasspa-microemacs:nanoemacs - Build NanoEmacs instead of MicroEmacs
+app-editors/joe:xterm - Enable full xterm clipboard support
+app-editors/leafpad:emacs - Enable Emacs key theme
+app-editors/mousepad:gtk3 - Use GTK+3 instead of GTK+2
+app-editors/ne:tinfo - Link against libtinfo from sys-libs/ncurses
+app-editors/neovim:clipboard - Enable clipboard support through a provider
+app-editors/neovim:nvimpager - Install nvimpager symlink to less.sh macro
+app-editors/neovim:remote - Enable support for remote options using nvr
+app-editors/neovim:tui - Build the neovim unix tui
+app-editors/qhexedit2:gui - Install Qt5 hex editor
+app-editors/tea:aspell - Enable spellchecking using app-text/aspell
+app-editors/tea:hunspell - Enable spellchecking using app-text/hunspell
+app-editors/tea:qml - Enable support for plugins using QML
+app-editors/vim:X - Link console vim against X11 libraries to enable title and clipboard features in xterm
+app-editors/vim:luajit - Use dev-lang/luajit instead of dev-lang/lua
+app-editors/vim:racket - Enable support for Scheme using dev-lang/racket
+app-editors/vim:vim-pager - Install vimpager and vimmanpager links
+app-editors/vis:tre - more memory efficient regex search using dev-libs/tre
+app-editors/xemacs:athena - Chooses the MIT Athena widget set
+app-editors/xemacs:dnd - Enables support for the x11-libs/dnd drag-n-drop library
+app-editors/xemacs:eolconv - Support detection and translation of newline conventions
+app-editors/xemacs:mule - Add multi-language support to XEmacs
+app-editors/xemacs:pop - Support POP for mail retrieval
+app-editors/xemacs:xim - Enable X11 XiM input method
+app-editors/zile:valgrind - Enable usage of dev-util/valgrind in tests
+app-emacs/anything:extensions - Install optional extensions
+app-emacs/auctex:preview-latex - Use bundled preview-latex
+app-emacs/bbdb:tex - Install plain TeX support files
+app-emacs/bbdb:vm - Add support for app-emacs/vm
+app-emacs/calfw:howm - Add support for the app-emacs/howm note-taking tool
+app-emacs/company-mode:ropemacs - Install backend for dev-python/ropemacs
+app-emacs/emacs-common-gentoo:games - Support shared score files for games
+app-emacs/org-mode:contrib - Install user-contributed files
+app-emacs/org-mode:odt-schema - Install non-free schema files for OpenDocument Text exporter
+app-emacs/remember:bbdb - Include support for app-emacs/bbdb
+app-emacs/remember:planner - Include support for app-emacs/planner
+app-emacs/slime:xref - Install xref.lisp cross-referencing tool
+app-emacs/vm:bbdb - Include support for app-emacs/bbdb
+app-emacs/wanderlust:bbdb - Include support for app-emacs/bbdb
+app-emacs/wikipedia-mode:outline-magic - Enable support for outline-mode extensions (app-emacs/outline-magic)
+app-vim/gentoo-syntax:ignore-glep31 - Remove GLEP 31 (UTF-8 file encodings) settings
+app-vim/youcompleteme:clang - Enable semantic support for C-family languages using sys-devel/clang
+app-xemacs/xemacs-packages-all:mule - Add multi-language support to XEmacs
