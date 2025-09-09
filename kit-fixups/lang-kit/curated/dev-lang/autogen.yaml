@@ -1,0 +1,15 @@
+go_gen:
+  defaults:
+    cat: dev-lang
+    template: go.tmpl
+    unmasked: False
+  generator: go
+  packages:
+    - go:
+        versions:
+          1.16.2:
+            unmasked: True
+          1.15.10:
+            unmasked: True
+          1.14.15:
+            unmasked: True

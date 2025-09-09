@@ -1,0 +1,1263 @@
+# The dev_python_compat_rule will handle situations where python2 support has been deprecated.
+#
+# An ebuild pyxattr-(latestversion) will be created.
+# An ebuild pyxattr-compat-(lastpy2version) will be created.
+# pyxattr will still "advertise" python2 support. If python2 support is selected, the older
+# pyxattr-compat will be RDEPENDed upon so it will be installed to satisfy those packages who
+# need it.
+
+# Work in Progress -- we currently have botocore forked and not autogenned. Needs more testing.
+# (drobbins, 2020-10-30)
+#
+
+funtoo_stuff:
+  defaults:
+    cat: dev-python
+    python_compat: python3+
+  generator: pypi-simple-1
+  packages:
+    - subpop
+
+botostuff:
+  defaults:
+    cat: dev-python
+    python_compat: python2+
+  generator: pypi-simple-1
+  packages:
+    - boto3:
+        pydeps:
+          - botocore
+          - jmespath
+          - s3transfer
+    - botocore:
+        pydeps:
+          - tox
+          - wheel
+          - behave
+          - jsonschema
+    - behave:
+        pydeps:
+          - cucumber-tag-expressions >= 1.1.2
+          - parse >= 1.18.0
+          - parse_type >= 0.4.2
+          - six >= 1.12.0
+          - colorama
+    - cucumber-tag-expressions
+    - jmespath
+    - s3transfer:
+        pydeps:
+          py:2:
+            - futures >= 2.2.0
+            - futures < 4.0.0
+    - parse
+    - parse_type:
+        pydeps:
+          - parse >= 1.18.0
+          - six >= 1.11
+
+aiobotostuff:
+  defaults:
+    cat: dev-python
+    python_compat: python3+
+  generator: pypi-simple-1
+  packages:
+    - idem-aws:
+        pydeps:
+          - acct >= 2.3
+          - aioboto3
+          - dict-toolbox >= 1.12
+          - pop >= 15
+          - idem >= 7.6
+        body: |
+          src_prepare() {
+            touch ${S}/requirements.txt
+            default
+          }
+    - aioboto3:
+        pydeps:
+          - aiobotocore
+          # This is actually needed during regular install:
+          - pytest-runner
+    - aioitertools:
+        pydeps:
+          - typing-extensions
+    - aiobotocore:
+        pydeps:
+          - aiohttp
+          - aioitertools
+          - botocore
+          - wrapt
+    - typing-extensions:
+        body: |
+          src_unpack() {
+            unpack ${A}
+            # archive has "typing_extensions" dir with underscore. This fixes it:
+            mv "${WORKDIR}/typing_"* "${S}" || die
+          }
+    - wrapt
+
+stuff_orphaned_in_python2:
+  defaults:
+    cat: dev-python
+    python_compat: python2_7
+  generator: pypi-simple-1
+  packages:
+    - configparser:
+        version: 4.0.2
+        pydeps:
+          py:all:
+            - backports
+          py:all:build:
+            - setuptools_scm
+        body: |
+          post_src_install() {
+            # This is installed by backports:
+            rm -f ${D}/usr/lib*/python*/site-packages/backports/__init__.py
+          }
+
+dev_python_namespaces_rule:
+  defaults:
+    cat: dev-python
+    python_compat: python3+
+    template: namespace.tmpl
+  generator: simple
+  packages:
+    - namespace-zope:
+        version: '1'
+        python_compat: python2+ pypy3
+        namespace: zope
+
+dev_python_compat_rule:
+  defaults:
+    cat: dev-python
+    python_compat: python3+
+  generator: pypi-compat-1
+  packages:
+    - asyncpg:
+        python_compat: python3+
+        description: A database interface library designed specifically for PostgresSQL and Python/asyncio.
+        license: Apache-2.0
+        homepage: |
+          https://github.com/MagicStack/asyncpg
+        bdepend:
+          dev-python/setuptools[$PYTHON_USEDEP]
+    - et_xmlfile:
+        python_compat: python2+
+        rdepend: |
+          dev-python/lxml[$PYTHON_USEDEP]
+        depend: |
+          dev-python/setuptools[$PYTHON_USEDEP]
+        license: MIT
+        desc: |
+          An implementation of lxml.xmlfile for the standard library
+        homepage: |
+          https://pypi.org/project/et_xmlfile/
+    - idna:
+        compat: '2.9'
+        blocker: '!<dev-python/idna-3'
+        license: BSD
+    - importlib_resources:
+        compat: '3.3.1'
+        python_compat: 'pypy3 python3_{7,8}'
+        blocker: '!<dev-python/importlib_resources-4'
+        license: Apache-2.0
+        rdepend: |
+          $(python_gen_cond_dep 'dev-python/zipp[${PYTHON_USEDEP}]' pypy3 python3_{6,7})
+        bdepend: |
+          dev-python/toml[${PYTHON_USEDEP}]
+          >=dev-python/setuptools_scm-3.4.1[${PYTHON_USEDEP}]
+        body: |
+          distutils_enable_sphinx docs dev-python/rst-linker dev-python/jaraco-packaging
+    - jdcal:
+        python_compat: python2+ pypy3
+        homepage: |
+          https://github.com/phn/jdcal
+        license: BSD
+        desc: |
+          Julian dates from proleptic Gegorian and Julian calendars
+    - openpyxl:
+        compat: '2.6.4'
+        blocker: '!<dev-python/openpyxl-3'
+        desc: |
+          A Python library to read/write Excel 2010 xlsx/xlsm/xltx/xltm files.
+        homepage: |
+          https://openpyxl.readthedocs.io/
+          https://pypi.org/project/openpyxl/
+        license: MIT
+        rdepend: |
+          dev-python/et_xmlfile[$PYTHON_USEDEP]
+          dev-python/jdcal[$PYTHON_USEDEP]
+        body: ""
+    - markdown:
+        compat: '3.1.1'
+        blocker: '!<dev-python/markdown-3.2'
+        python_compat: python3+ pypy3
+        desc: Python implementation of the markdown markup language
+        homepage: |
+          https://python-markdown.github.io/
+          https://pypi.org/project/Markdown/
+          https://github.com/Python-Markdown/markdown
+        license: BSD
+        rdepend: |
+          $(python_gen_cond_dep 'dev-python/importlib_metadata[${PYTHON_USEDEP}]' python3_{6,7} pypy3)
+        body: |
+          S="${WORKDIR}/Markdown-${PV}"
+
+          post_src_install() {
+            # We should start to do this automatically:
+            [ "$PV" == "3.1.1" ] && rm -rf ${D}/usr/bin
+          }
+    - more-itertools:
+        compat: '4.3.0'
+        blocker: '!<dev-python/more-itertools-8'
+        homepage: 'https://pypi.org/project/more-itertools/'
+    - mwparserfromhell:
+        compat: '0.5.4'
+        blocker: '!<dev-python/mwparserfromhell-0.6'
+    - pycountry:
+        compat: '18.12.8'
+        blocker: '!<dev-python/pycountry-19.7.15'
+        homepage: https://github.com/flyingcircusio/pycountry
+        license: LGPL-2.1
+        restrict: test
+        pydeps:
+          - setuptools
+    - pyhamcrest:
+        compat: '1.9.0'
+        blocker: '!<dev-python/pyhamcrest-2.0.0'
+        homepage: https://github.com/hamcrest/PyHamcrest
+        description: Hamcrest framework for matcher objects
+        license: BSD
+        body: |
+          S="${WORKDIR}/PyHamcrest-${PV}"
+    - pyrsistent:
+        compat: '0.16.0'
+        blocker: '!<dev-python/pyrsistent-0.16.0'
+        python_compat: python3+ pypy3
+        license: MIT
+        homepage: https://github.com/tobgu/pyrsistent/ https://pypi.org/project/pyrsistent/
+        desc: Persistent/Functional/Immutable data structures
+        rdepend_compat: |
+          dev-python/six[${PYTHON_USEDEP}]
+        revision: 1
+    - pyxattr:
+        compat: '0.6.1'
+        blocker: '!<dev-python/pyxattr-0.7.1'
+        python_compat: python3+
+        rdepend: 'sys-apps/attr:='
+        depend: 'sys-apps/attr:='
+        desc: Python interface to xattr
+        homepage: https://pyxattr.k1024.org
+        license: LGPL-2.1
+        body: |
+          distutils_enable_tests pytest
+          distutils_enable_sphinx doc dev-python/recommonmark
+
+          python_prepare_all() {
+            sed -i -e 's:, "-Werror"::' setup.py || die
+            # Bug 548486
+            sed -e "s:html_theme = 'default':html_theme = 'classic':" -i doc/conf.py || die
+            distutils-r1_python_prepare_all
+          }
+    - pyzmq:
+        compat: '19.0.2'
+        blocker: '!<=dev-python/pyzmq-19.0.2'
+        python_compat: python3+ pypy{,3}
+        depend: |
+          dev-python/cython[${PYTHON_USEDEP}]
+        rdepend: |
+          >=net-libs/zeromq-4.2.2-r2:=[drafts]
+        inherit:
+          - toolchain-funcs
+          - flag-o-matic
+        license: LGPL-3
+        description: Lightweight and super-fast messaging library built on top of the ZeroMQ library
+        homepage: |
+          http://www.zeromq.org/bindings:python https://pypi.org/project/pyzmq/
+        pydeps:
+          py:all:
+            - py
+            - cffi
+          py:2:
+            - gevent
+        body: |
+          python_configure_all() {
+            tc-export CC
+            append-cppflags -DZMQ_BUILD_DRAFT_API=1
+          }
+    - scons:
+        compat: 3.1.2
+        blocker: '!<dev-util/scons-4.0.0'
+        pypi_name: SCons
+        desc: Extensible Python-based build utility
+        homepage: https://www.scons.org/
+        license: MIT
+        cat: dev-util
+        du_setuptools: rdepend
+        restrict: test
+        body: |
+          if [ "$PN"  == 'scons-compat' ]; then
+            S="${WORKDIR}/scons-${PV}"
+          fi
+          python_install() {
+            distutils-r1_python_install
+            rm "${D}"/usr/*.1
+            doman *.1
+
+            if [ "$PN"  == 'scons-compat' ]; then
+              rm -rf "${D}"/usr/bin
+              find "${D}" -type d -name "man" -exec rm -rf \{\} \;
+
+            fi
+
+          }
+    - setuptools:
+        du_setuptools: 'no'
+        desc: Collection of extensions to Distutils
+        license: MIT
+        iuse: test
+        blocker: '!<dev-python/setuptools-47'
+        restrict: '!test? ( test )'
+        homepage: >
+          https://github.com/pypa/setuptools
+          https://pypi.org/project/setuptools/
+        compat: '44.1.1'
+        python_compat: python3+ pypy{,3}
+        depend: |
+          app-arch/unzip
+          test? (
+            dev-python/mock[${PYTHON_USEDEP}]
+            dev-python/pip[${PYTHON_USEDEP}]
+            >=dev-python/pytest-3.7.0[${PYTHON_USEDEP}]
+            <dev-python/pytest-4
+            dev-python/pytest-fixture-config[${PYTHON_USEDEP}]
+            dev-python/pytest-virtualenv[${PYTHON_USEDEP}]
+            dev-python/wheel[${PYTHON_USEDEP}]
+            virtual/python-futures[${PYTHON_USEDEP}]
+          )
+        pdepend: ">=dev-python/certifi-2016.9.26[${PYTHON_USEDEP}]"
+        body: |
+          python_prepare_all() {
+            # disable tests requiring a network connection
+            rm setuptools/tests/test_packageindex.py || die
+            # don't run integration tests
+            rm setuptools/tests/test_integration.py || die
+            distutils-r1_python_prepare_all
+          }
+
+          python_test() {
+            # test_easy_install raises a SandboxViolation due to ${HOME}/.pydistutils.cfg
+            # It tries to sandbox the test in a tempdir
+            HOME="${PWD}" pytest -vv ${PN} || die "Tests failed under ${EPYTHON}"
+          }
+
+          python_install() {
+            export DISTRIBUTE_DISABLE_VERSIONED_EASY_INSTALL_SCRIPT=1
+            distutils-r1_python_install
+            # Remove any wrapper
+            if [ "$PN"  == 'setuptools-compat' ]; then
+              rm -rf ${D}/usr/bin
+            fi
+
+          }
+    - xlrd:
+        desc: Extract data from Excel spreadsheets
+        python_compat: python2+
+        homepage: |
+          http://www.python-excel.org/
+        license: BSD
+        bdepend: |
+          dev-python/setuptools[$PYTHON_USEDEP]
+    - xmltodict:
+        desc: A python module that makes working with XML feel like you are working with JSON
+        python_compat: python2+ pypy{,3}
+        license: MIT
+        homepage: |
+          https://github.com/martinblech/xmltodict
+        bdepend:
+          dev-python/setuptools[$PYTHON_USEDEP]
+    - zstandard:
+        compat: '0.14.1'
+        blocker: '!<dev-python/zstandard-0.15.0'
+        desc: Zstandard Bindings for Python
+        homepage: https://pypi.org/project/zstandard/ https://github.com/indygreg/python-zstandard
+        license: BSD
+        iuse: test
+        restrict: '!test? ( test )'
+        rdepend: 'dev-python/cffi:=[${PYTHON_USEDEP}]'
+        depend: 'test? ( dev-python/hypothesis[${PYTHON_USEDEP}] )'
+        body: |
+          python_compile() {
+            local MAKEOPTS=-j1
+            distutils-r1_python_compile
+          }
+          python_test() {
+            esetup.py test
+          }
+    - importlib_metadata:
+        compat: '2.1.1'
+        blocker: '!<=dev-python/importlib_metadata-3.4.0-r1'
+        desc: Read metadata from Python packages
+        homepage: https://importlib-metadata.readthedocs.io/
+        license: Apache-2.0
+        pydeps:
+          py:all:
+            - setuptools_scm
+            - zipp
+            - toml
+          py:3:
+            - typing-extensions >= 3.6.4
+          py:2:
+            - configparser >= 3.5
+            - contextlib2
+            - pathlib2
+        body: |
+          distutils_enable_sphinx "${PN}/docs" '>=dev-python/rst-linker-1.9'
+        revision: 2
+
+simple_python_autogen_rule:
+  defaults:
+    cat: dev-python
+    python_compat: python3+
+  generator: pypi-simple-1
+  packages:
+    - bpytop:
+        desc: Linux/OSX/FreeBSD resource monitor
+        homepage: https://github.com/aristocratos/bpytop
+        license: Apache-2.0
+        cat: sys-process
+        pydeps:
+          - psutil
+        body: |
+          src_install() {
+            insinto "/usr/share/${PN}/themes"
+            doins bpytop-themes/*.theme
+            distutils-r1_src_install
+          }
+    - cairocffi:
+        desc: CFFI based drop in replacement for Pycairo
+        homepage: https://github.com/Kozea/cairocffi
+        license: BSD
+        restrict: test
+        pydeps:
+          py:'python*':
+            - cffi >= 1.1.0:=
+          py:all:
+            - xcffib >= 0.3.2
+        rdepend: |
+          x11-libs/cairo:0=[X,xcb(+)]
+          x11-libs/gdk-pixbuf[jpeg]
+        body: |
+          src_prepare() {
+            sed -i -e '/pytest-/d' -e '/addopts/d' setup.cfg || die
+            distutils-r1_src_prepare
+          }
+    - cheetah3:
+        pypi_name: Cheetah3
+        desc: Python-powered template engine and code generator
+        homepage: http://www.cheetahtemplate.org/ https://pypi.org/project/Cheetah3/
+        license: MIT
+        du_setuptools: 'no'
+        restrict: test
+        rdepend: "!dev-python/cheetah"
+        pydeps:
+          - markdown
+    - dict-toolbox:
+        desc: Dict tools for Python projects
+        homepage: https://gitlab.com/saltstack/open/dict-toolbox https://pypi.org/project/dict-toolbox/
+        license: Apache-2.0
+        pydeps:
+          - msgpack
+        body: |
+          src_prepare() {
+            touch ${S}/requirements.txt
+            default
+          }
+    - colorama:
+        python_compat: python2+ pypy3
+        desc: ANSI escape character sequences for colored terminal text & cursor positioning
+        homepage: https://github.com/tartley/colorama https://pypi.org/project/colorama/
+        license: BSD
+    - fetchcord:
+        cat: net-im
+        pypi_name: FetchCord
+        desc: FetchCord grabs your OS info and displays it as Discord Rich Presence
+        homepage: https://github.com/MrPotatoBobx/FetchCord
+        license: MIT
+        pydeps:
+          py:all:
+            - setuptools
+            - psutil
+            - pypresence
+        depend: |
+          net-im/discord-bin
+          app-misc/neofetch
+          x11-apps/mesa-progs
+        python_compat: python3+
+    - rfc3986:
+        desc: A Python implementation of RFC 3986 including validation and authority parsing
+        homepage: http://rfc3986.readthedocs.io/ https://pypi.org/project/rfc3986/
+        license: Apache-2.0
+        python_compat: python2+ pypy{,3}
+    - hg-git:
+        cat: dev-vcs
+        desc: push to and pull from a Git repository using Mercurial
+        homepage: https://hg-git.github.io  https://pypi.org/project/hg-git/
+        license: GPL-2
+        depend: ${RDEPEND}
+        rdepend: |
+          >=dev-vcs/mercurial-4.3[${PYTHON_USEDEP}]
+          >=dev-python/dulwich-0.19.0[${PYTHON_USEDEP}]
+    - pypeg2:
+        pypi_name: pyPEG2
+        du_setuptools: 'no'
+        desc: An intrinsic PEG Parser-Interpreter for Python
+        homepage: https://pypi.org/project/pyPEG2/ https://fdik.org/pyPEG/
+        license: GPL-2
+        restrict: test
+        rdepend: dev-python/lxml[${PYTHON_USEDEP}]
+    - pypresence:
+        desc: A Discord RPC library in Python
+        homepage: https://qwertyquerty.github.io/pypresence/html/index.html
+        license: MIT
+        pydeps:
+          py:all:
+            - setuptools
+        python_compat: python3+
+    - qtile:
+        desc: A full-featured, hackable tiling window manager written in Python
+        homepage: http://www.qtile.org/
+        license: MIT
+        cat: x11-wm
+        restrict: test
+        du_setuptools: rdepend
+        pydeps:
+          py:all:
+            - setuptools_scm
+            - cairocffi >= 0.9.0
+            - cffi >= 1.1.0
+            - six >= 1.4.1
+            - xcffib >= 0.8.1
+        rdepend: |
+          x11-libs/cairo[X,xcb(+)]
+          x11-libs/pango
+          media-sound/pulseaudio
+        body: |
+          python_install_all() {
+            local DOCS=( CHANGELOG README.rst )
+            distutils-r1_python_install_all
+            insinto /usr/share/xsessions
+            doins resources/qtile.desktop
+            exeinto /etc/X11/Sessions
+            newexe "${FILESDIR}"/${PN}-session ${PN}
+          }
+    - requests:
+        revision: 1
+        desc: HTTP library for human beings
+        homepage: https://requests.readthedocs.io/en/master/
+        license: Apache-2.0
+        iuse: socks5 +ssl
+        pydeps:
+          py:all:
+            - certifi >= 2017.4.17
+            - chardet
+            - idna
+            - urllib3
+          use:socks5:
+            - PySocks >= 1.5.6
+          use:ssl:
+            - cryptography >= 1.3.4
+            - pyopenssl >= 0.14
+        python_compat: python2+ pypy{,3}
+        body: |
+          # FL-7939: relax deps for idna
+          src_prepare() {
+            sed -i -e '/^idna/c idna' requests.egg-info/requires.txt || die
+            sed -i -e "s/'idna.*$/'idna',/" setup.py || die
+            distutils-r1_src_prepare
+          }
+    - semantic_version:
+        desc: Python library providing a few tools handling SemVer in Python
+        homepage: https://pypi.org/project/semantic_version/
+        license: BSD
+    - speedtest-cli:
+        cat: net-analyzer
+        desc: Command line interface for testing internet bandwidth using speedtest.net
+        homepage: https://github.com/sivel/speedtest-cli
+        license: Apache-2.0
+        pydeps:
+          py:all:
+            - setuptools
+    - thefuck:
+        cat: app-shells
+        desc: Magnificent app which corrects your previous console command
+        homepage: https://github.com/nvbn/thefuck
+        license: MIT
+        pydeps:
+          py:all:
+            - psutil
+            - six
+            - decorator
+            - colorama
+            - pyte
+        python_compat: python3+
+        body: |
+          python_prepare_all() {
+            sed -i -e "/import pip/s/^/#/" -e "/pip.__version__/,+3 s/^/#/" setup.py || die
+            distutils-r1_python_prepare_all
+          }
+    - iniparse:
+        desc: Better INI parser for Python
+        homepage: https://pypi.org/project/iniparse
+        license: MIT PSF-2
+        python_compat: python2+
+        pydeps:
+          py:all:
+            - six >= 1.10.0
+    - translate-toolkit:
+        desc: Toolkit to convert between many translation formats
+        homepage: https://github.com/translate/translate
+        license: GPL-2
+        du_setuptools: 'rdepend'
+        iuse: +html +ical +ini +subtitles +yaml
+        restrict: test
+        pydeps:
+          py:all:
+            - six >= 1.11.0
+            - chardet >= 3.0.4
+            - cheroot
+            - lxml >= 4.3.1
+            - pycountry >= 19.8.18
+            - python-levenshtein >= 0.12.0
+            - ruamel-yaml
+          use:html:
+            - utidylib
+          use:ical:
+            - vobject
+          use:ini:
+            - iniparse >= 0.5
+          use:yaml:
+            - pyyaml
+        rdepend: |
+          !dev-python/pydiff
+          app-text/iso-codes
+          sys-devel/gettext
+          subtitles? ( media-video/gaupol[${PYTHON_USEDEP}] )
+        body: |
+          distutils_enable_sphinx docs dev-python/sphinx-bootstrap-theme
+          src_prepare() {
+            sed -i -e 's#"docs", "share"#"share"#' setup.py
+            distutils-r1_src_prepare
+          }
+
+          python_install_all() {
+            distutils-r1_python_install_all
+
+            if ! use html; then
+              rm "${ED}"/usr/bin/{html2po,po2html} || die
+            fi
+            if ! use ical; then
+              rm "${ED}"/usr/bin/{ical2po,po2ical} || die
+            fi
+            if ! use ini; then
+              rm "${ED}"/usr/bin/{ini2po,po2ini} || die
+            fi
+            if ! use subtitles; then
+              rm "${ED}"/usr/bin/{sub2po,po2sub} || die
+            fi
+            python_optimize
+          }
+    - xcffib:
+        desc: A drop-in replacement for xpyb, an XCB python binding
+        homepage: https://github.com/tych0/xcffib
+        license: Apache-2.0
+        restrict: test
+        pydeps:
+          py:'python*':
+            - cffi >= 1.1:=
+          py:all:
+            - six
+        depend: |
+          x11-libs/libxcb
+
+salt_misc_deps_rule:
+  defaults:
+    cat: dev-python
+    python_compat: python3+
+  generator: pypi-simple-1
+  packages:
+    - colored:
+        python_compat: python2+
+    - distro:
+        python_compat: python2+
+    - h11
+    - httpcore:
+        rdepend: |
+          dev-python/h11[${PYTHON_USEDEP}]
+          dev-python/sniffio[${PYTHON_USEDEP}]
+    - httpx:
+        rdepend: |
+          dev-python/httpcore[${PYTHON_USEDEP}]
+          dev-python/brotlipy[${PYTHON_USEDEP}]
+          dev-python/rfc3986[${PYTHON_USEDEP}]
+    - sniffio
+
+io_stuff_rule:
+  generator: pypi-simple-1
+  defaults:
+    cat: dev-python
+    python_compat: python3+
+  packages:
+    - anyio:
+        pydeps:
+          - sniffio >= 1.1
+          - idna >= 2.8
+          - typing-extensions
+          - curio >= 1.4
+          - trio >= 0.16
+    - async-generator:
+        pypi_name: async_generator
+    - trio:
+        pydeps:
+          - attrs >= 19.2.0
+          - sortedcontainers
+          - async-generator >= 1.9
+          - idna
+          - outcome
+          - sniffio
+    - sortedcontainers:
+        python_compat: python2+
+    - outcome:
+        pydeps:
+          - attrs >= 19.2.0
+    - uvloop
+    - curio
+
+gis_rule:
+  generator: pypi-simple-1
+  defaults:
+    cat: dev-python
+    python_compat: python3+
+  packages:
+    - pyproj:
+        license: MIT
+        desc: Python interface to the PROJ library
+        rdepend: |
+          >=sci-libs/proj-6.2.0:=
+        depend: |
+          >=sci-libs/proj-6.2.0:=
+          dev-python/cython[${PYTHON_USEDEP}]
+        body: |
+          distutils_enable_sphinx docs dev-python/sphinx_rtd_theme
+
+# Stuff that has moved on to python3 but that we need compat ebuilds for ---
+# for compatibility.
+#
+compat_testing_deps_rule:
+  defaults:
+    cat: dev-python
+    python_compat: python3+ pypy3
+  generator: pypi-compat-1
+  packages:
+    - pytest:
+        body: |
+          post_src_install() {
+            if [ "$PV" == "4.6.9" ]; then
+              rm -rf ${D}/usr/bin
+            fi
+          }
+        compat: '4.6.9'
+        blocker: '!<dev-python/pytest-6.1.1'
+        pydeps:
+          py:all:
+            - attrs >= 17.4.0
+            - iniconfig
+            - more-itertools >= 4
+            - packaging
+            - pluggy >= 0.12
+            - pluggy < 1
+            - py >= 1.8.2
+            - toml
+          py:2:
+            - atomicwrites
+            - pathlib2
+            - funcsigs
+            - wcwidth
+            - six
+          py:2,3.6,3.7,pypy3:
+            - importlib_metadata
+        depend: |
+          dev-python/setuptools_scm[${PYTHON_USEDEP}]
+    - mock:
+        desc: 'Stand-alone version of unittest.mock included in py3.3+'
+        compat: '3.0.5'
+        blocker: '!<dev-python/mock-3.0.5'
+        homepage: 'https://github.com/testing-cabal/mock'
+        license: BSD
+        pydeps:
+          py:2:
+            - funcsigs
+          py:all:
+            - six >= 1.9
+        depend: |
+          >=dev-python/setuptools-17.1[${PYTHON_USEDEP}]
+
+testing_deps_rule:
+  defaults:
+    cat: dev-python
+    python_compat: python3+
+  generator: pypi-simple-1
+  packages:
+    - iniconfig:
+        python_compat: python2+ pypy3
+        bdepend: |
+          dev-python/setuptools_scm[${PYTHON_USEDEP}]
+    - pluggy:
+        python_compat: python2+ pypy3
+        rdepend: |
+          dev-python/importlib_metadata[${PYTHON_USEDEP}]
+    # TODO: move all the pytest stuff over here.
+    # TODO: add pytest-pop, silly.
+    - setuptools-declarative-requirements:
+        pydeps:
+          - setuptools_scm
+        body: |
+          # https://github.com/s0undt3ch/setuptools-declarative-requirements/pull/3
+          src_prepare() {
+            rm ${S}/tests/__init__.py || die
+            default
+          }
+    - pytest-salt-factories:
+        du_setuptools: rdepend
+        body: |
+          # submitted PR https://github.com/saltstack/pytest-salt-factories/pull/33
+          src_prepare() {
+            rm ${S}/tests/__init__.py || die
+            default
+          }
+        pydeps:
+          - pytest > 6.1.1
+          - attrs >= 19.2.0
+          - pytest-tempdir >= 2019.9.6
+          - psutil
+          - pyzmq
+          - msgpack 
+          - setuptools-declarative-requirements
+    - pytest-asyncio:
+        pydeps:
+          - pytest
+    - pytest-tempdir:
+        python_compat: python2+
+        pydeps:
+          - pytest >= 2.8.1
+    # required by pytest-pop:
+    - asynctest
+
+salt_stuff_rule:
+  defaults:
+    cat: dev-python
+    python_compat: python3+
+  generator: pypi-simple-1
+  packages:
+    - acct:
+        body: |
+          # drobbins fixed upstream
+          src_prepare() {
+            touch ${S}/requirements.txt
+            default
+          }
+        pydeps:
+          - pop
+          - pop-config
+          - cryptography
+          - msgpack
+          - dict-toolbox
+    - idem:
+        pydeps:
+          - dict-toolbox
+          - pyyaml
+          - wheel
+          - jinja
+          - pop
+          - dict-toolbox
+          - rend
+          - toml
+          - acct
+    - pop-config:
+        body: |
+          # drobbins fixed upstream
+          src_prepare() {
+            touch ${S}/requirements.txt
+            default
+          }
+        pydeps:
+          - pop
+          - dict-toolbox
+          - aiologger
+          - aiofiles
+    - pop:
+        body: |
+          # drobbins fixed upstream
+          src_prepare() {
+            install -d ${S}/requirements
+            touch ${S}/requirements/base.txt
+            default
+          }
+        pydeps:
+          - pop-config
+          - pyyaml
+          - dict-toolbox
+          - msgpack
+    - pytest-pop:
+        # drobbins fixed upstream
+        body: |
+          src_prepare() {
+            touch ${S}/requirements.txt
+            default
+          }
+        pydeps:
+          - asynctest
+          - dict-toolbox
+          - mock >= 4.0.1
+          - pop
+          - pop-config >= 6.8
+          - pytest-salt-factories
+          - pytest-asyncio >= 0.12
+          - pytest >= 5.4
+    - rend:
+        # drobbins fixed upstream
+        body: |
+          src_prepare() {
+            touch ${S}/requirements.txt
+            default
+          }
+        pydeps:
+          - pop
+          - colored
+          - pyyaml
+          - jinja
+          - toml
+
+dev_python_simplified_rule:
+  defaults:
+    cat: dev-python
+    python_compat: python3+
+  generator: pypi-compat-1
+  packages:
+    - async-property:
+        pypi_name: async_property
+        pydeps:
+          py:all:
+            - pytest-runner
+    - dbus-next:
+        pypi_name: dbus_next
+    - setuptools_scm:
+        compat: '5.0.2'
+        blocker: "!<dev-python/setuptools_scm-6.0.0"
+        python_compat: python3+
+    - setuptools-rust:
+        pydeps:
+          py:all:
+            - wheel
+            - semantic_version >= 2.8.5
+            - toml
+    - cryptography:
+        compat: '3.3.2'
+        blocker: "!<dev-python/cryptography-3.4.2"
+        inherit:
+          - cargo
+        iuse: libressl idna
+        license: "|| ( Apache-2.0 BSD )"
+        desc: |
+          Library providing cryptographic recipes and primitives
+        depend: |
+          libressl? ( dev-libs/libressl:0= )
+          !libressl? ( dev-libs/openssl:0= )
+        pydeps:
+          py:3:build:
+            - setuptools-rust >= 0.12.1
+          py:all:build:
+            - setuptools
+          py:all:
+            - six >= 1.4.1
+            - virtual/python-enum34
+            - virtual/python-ipaddress
+            - cffi >= 1.11.3
+          use:idna:
+            - idna >= 2.1
+
+
+dev_python_autogen_rule:
+  defaults:
+    cat: dev-python
+    python_compat: python3+
+  generator: pypi-1
+  packages:
+    - alabaster:
+        python_compat: python2+ pypy{,3}
+    - aiohttp
+    - aiohttp-socks:
+        python_compat: python3+ pypy3
+    - arrow:
+        python_compat: python2+ pypy{,3}
+    - async_timeout:
+        python_compat: python3+ pypy3
+    - attrs:
+        python_compat: python2+ pypy3
+    - automat:
+        python_compat: python2+ pypy3
+    - authres:
+        versions:
+          1.1.1:
+            python_compat: python2+ pypy3
+    - Babel:
+        python_compat: python2+ pypy3
+    - backports-functools-lru-cache:
+        python_compat: python2+ pypy{,3}
+        pypi_name: backports.functools-lru-cache
+    - bitarray:
+        python_compat: python2+ pypy3
+    - blinker:
+        python_compat: python2+ pypy3
+    - cffi:
+        python_compat: python2+ pypy{,3}
+    - click:
+        python_compat: python2+ pypy3
+    - cloudflare
+    - cython:
+        python_compat: python2+ pypy3
+        pypi_name: Cython
+    - daemonize:
+        python_compat: python2+ pypy3
+    - defusedxml:
+        python_compat: python2+ pypy{,3}
+    - dns-lexicon
+    - dnspython:
+        python_compat: python2+ pypy3
+    - entrypoints:
+        python_compat: python2+ pypy3
+        revision: 1
+    - extras:
+        python_compat: python2+ pypy{,3}
+    - feedgenerator:
+        python_compat: python2+ pypy{,3}
+    - flake8:
+        python_compat: python2+ pypy{,3}
+    - flask:
+        python_comapt: python2+ pypy3
+    - flask-jwt:
+        python_compat: python2+ pypy{,3}
+    - h5py:
+        python_compat: python2+ pypy{,3}
+    - imagesize:
+        python_compat: python2+ pypy{,3}
+    - itsdangerous:
+        python_compat: python2+ pypy3
+    - ipy:
+        python_compat: python2+ pypy{,3}
+    - jeepney:
+        python_compat: python3+ pypy3
+    - jsonschema:
+        python_compat: python2+ pypy3
+    - matplotlib:
+        python_compat: python3+ pypy3
+    - pandas:
+        python_compat: python3+
+    - psutil:
+        python_compat: python2+ pypy{,3}
+    - pycares:
+        python_compat: python3+ pypy3
+    - pyproject2setuppy:
+        python_compat: python3+ pypy3
+    - pyxdg:
+        python_compat: python2+ pypy3
+    - pyyaml:
+        python_compat: python2+ pypy3
+        pypi_name: PyYAML
+    - python-dateutil:
+        python_compat: python2+ pypy{,3}
+    - toml:
+        python_compat: python2+ pypy3
+    - twine:
+        python_compat: python3+ pypy3
+    - tqdm:
+        python_compat: python2+ pypy3
+    - terminado:
+        python_compat: python3+
+    - testresources:
+        python_compat: python2+ pypy{,3}
+    - testscenarios:
+        python_compat: python3+ pypy3
+    - fixtures:
+        python_compat: python2+ pypy3
+    - readme_renderer:
+        python_compat: python2+ pypy3
+    - pygments:
+        python_compat: python3+
+    - pygments-compat:
+        version: 2.5.2
+        python_compat: python2_7
+        template: pygments-old.tmpl
+        pypi_name: pygments
+    - msgpack
+    - msgpack-compat:
+        version: 0.6.2
+        template: msgpack.tmpl
+        pypi_name: msgpack
+        python_compat: python2_7
+    - multidict:
+        python_compat: python3+
+    - numpy
+    - py:
+        python_compat: python2+ pypy{,3}
+    - pymongo:
+        python_compat: python2+
+    - flake8-polyfill:
+        python_compat: python2+
+    - pyjwt:
+        python_compat: python2+ pypy{,3}
+    - PySocks:
+        python_compat: python2+ pypy{,3}
+    - certifi:
+        python_compat: python2+ pypy{,3}
+    - docutils:
+        python_compat: python2+ pypy3
+    - dbus-python:
+        python_compat: python2+ pypy{,3}
+    - chardet:
+        python_compat: python2+ pypy{,3}
+    - enum34:
+        python_compat: python2_7 pypy
+    - freezegun:
+        python_compat: python2+ pypy3
+    - ipaddress:
+        python_compat: python2+ pypy{,3}
+    - jinja:
+        python_compat: python2+ pypy{,3}
+        pypi_name: Jinja2
+    - lxml:
+        python_compat: python2+ pypy3
+    - mako:
+        python_compat: python2+ pypy{,3}
+    - markupsafe:
+        python_compat: python2+ pypy{,3}
+    - pyblake2:
+        python_compat: python2+ pypy{,3}
+    - pycparser:
+        python_compat: python2+ pypy{,3}
+    - python-gnupg:
+        python_compat: python3+ pypy3
+    - ply:
+        python_compat: python2+ pypy{,3}
+    - pyelftools:
+        python_compat: python2+ pypy{,3}
+    - pyopenssl:
+        python_compat: python2+ pypy{,3}
+    - pytz:
+        python_compat: python2+ pypy3
+    - secretstorage:
+        python_compat: python3+ pypy3
+    - six:
+        python_compat: python2+ pypy{,3}
+    - snowballstemmer:
+        python_compat: python2+ pypy{,3}
+    - sphinx:
+        python_compat: python3+ pypy3
+    - sphinx_rtd_theme:
+        python_compat: python3+ pypy3
+    - sphinxcontrib-applehelp:
+        python_compat: python3+ pypy3
+    - sphinxcontrib-asyncio:
+        python_compat: python3+ pypy3
+    - sphinxcontrib-blockdiag:
+        python_compat: python3+ pypy3
+    - sphinxcontrib-cheeseshop:
+        python_compat: python3+ pypy3
+    - sphinxcontrib-devhelp:
+        python_compat: python3+ pypy3
+    - sphinxcontrib-ditaa:
+        python_compat: python3+ pypy3
+    - sphinxcontrib-documentedlist:
+        python_compat: python3+ pypy3
+    - sphinxcontrib-doxylink:
+        python_compat: python3+ pypy3
+    - sphinxcontrib-github-alt:
+        python_compat: python3+ pypy3
+    - sphinxcontrib-googleanalytics:
+        python_compat: python3+ pypy3
+    - sphinxcontrib-htmlhelp:
+        python_compat: python3+ pypy3
+    - sphinxcontrib-httpdomain:
+        python_compat: python3+ pypy3
+    - sphinxcontrib-issuetracker:
+        python_compat: python3+ pypy3
+    - sphinxcontrib-jsmath:
+        python_compat: python3+ pypy3
+    - sphinxcontrib-napoleon:
+        python_compat: python3+ pypy3
+    - sphinxcontrib-newsfeed:
+        python_compat: python3+ pypy3
+    - sphinxcontrib-programoutput:
+        python_compat: python3+ pypy3
+    - sphinxcontrib-qthelp:
+        python_compat: python3+ pypy3
+    - sphinxcontrib-serializinghtml:
+        python_compat: python3+ pypy3
+    - sphinxcontrib-spelling:
+        python_compat: python3+ pypy3
+    - sphinxcontrib-websupport:
+        python_compat: python3+ pypy3
+    - testtools:
+        python_compat: python2+ pypy3
+    - urllib3:
+        python_compat: python2+ pypy{,3}
+    - wcwidth:
+        python_compat: python2+ pypy3
+    - werkzeug:
+        python_compat: python2+ pypy3
+    - wstools:
+        python_compat: python2+
+    - yarl:
+        python_compat: python3+
+    - zope-component:
+        python_compat: python2+ pypy3
+    - zope-configuration:
+        python_compat: python2+ pypy3
+    - zope-deferredimport:
+        python_compat: python2+ pypy3
+    - zope-deprecation:
+        python_compat: python3+ pypy3
+    - zope-event:
+        python_compat: python2+ pypy3
+    - zope-exceptions:
+        python_compat: python2+ pypy3
+    - zope-hookable:
+        python_compat: python2+ pypy3
+    - zope-interface:
+        python_compat: python2+ pypy3
+    - zope-i18nmessageid:
+        python_compat: python2+ pypy3
+    - zope-location:
+        python_compat: python2+ pypy3
+    - zope-proxy:
+        python_compat: python2+ pypy3
+    - zope-schema:
+        python_compat: python2+ pypy3
+    - zope-testing:
+        python_compat: python2+ pypy3
+    - zope-testrunner:
+        python_compat: python2+ pypy3
+    - cheroot:
+        python_compat: python2+ pypy3
+    - aiofiles
+    - aiologger
+    - html2text:
+        python_compat: python3+ pypy3
+    - html5-parser
+    - isort:
+        python_compat: python3+ pypy3
+    - mechanize
+    - cppy
+    - cycler:
+        pypi_name: Cycler
+    - kiwisolver

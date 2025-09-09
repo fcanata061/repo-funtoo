@@ -1,0 +1,17 @@
+include *.txt
+include babel.cfg
+include LICENSE
+include bin/preinstall.js
+recursive-include sphinx_funtoo_theme *.conf
+recursive-include sphinx_funtoo_theme *.css
+recursive-include sphinx_funtoo_theme *.eot
+recursive-include sphinx_funtoo_theme *.html
+recursive-include sphinx_funtoo_theme *.js
+recursive-include sphinx_funtoo_theme *.svg
+recursive-include sphinx_funtoo_theme *.ttf
+recursive-include sphinx_funtoo_theme *.woff
+recursive-include sphinx_funtoo_theme *.woff2
+recursive-include sphinx_funtoo_theme/locale *.pot *.po *.mo
+recursive-include tests *.py
+recursive-include tests *.rst
+prune build

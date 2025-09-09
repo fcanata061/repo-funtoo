@@ -1,0 +1,3 @@
+# FL-8089: We are now attempting to use the 'modesetting' driver. So i915 is disabled.
+VIDEO_CARDS="intel vulkan-intel dri3 i965"
+USE="xa xvmc vaapi vdpau"

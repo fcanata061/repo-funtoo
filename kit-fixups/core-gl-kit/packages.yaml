@@ -1,0 +1,3 @@
+packages:
+- gentoo-staging:
+  - x11-drivers/xf86-video-openchrome
