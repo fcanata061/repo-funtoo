@@ -1,0 +1,58 @@
+#!/bin/sh
+
+if [ -z "$1" ]
+then
+	echo "Error: should be called from udhcpc"
+	exit 1
+fi
+
+case ${1} in
+	bound|renew)
+		[ -n "$broadcast" ] && BROADCAST="broadcast ${broadcast}"
+		[ -n "$subnet" ] && NETMASK="netmask ${subnet}"
+		[ -n "$rootpath" ] && echo "${rootpath}" > /rootpath
+		[ -n "$hostname" ] && hostname "${hostname}"
+
+		busybox ifconfig "${interface}" ${ip} ${BROADCAST} ${NETMASK}
+
+		if [ -n "${router}" ]
+		then
+			while busybox route del default gw 0.0.0.0 dev "${interface}" >/dev/null 2>&1
+			do
+				:
+			done
+
+			for i in ${router}
+			do
+				busybox route add default gw ${i}
+			done
+		fi
+
+		[ -n "$domain" ] && echo "domain ${domain}" >> /etc/resolv.conf
+
+		if [ -n "${dns}" ]
+		then
+			for i in ${dns}
+			do
+				echo "nameserver ${i}" >> /etc/resolv.conf
+			done
+		fi
+	;;
+	deconfig|leasefail)
+		busybox ifconfig "${interface}" 0.0.0.0
+		while busybox route del default dev "${interface}" >/dev/null 2>&1
+		do
+			:
+		done
+	;;
+	nak)
+		echo "nak: ${message}"
+	;;
+	*)
+		echo "unknown option $1" >&2
+		echo "Usage: $0 {bound|deconfig|leasefail|nak|renew}" >&2
+		exit 1
+	;;
+esac
+
+exit 0

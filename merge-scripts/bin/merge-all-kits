@@ -1,0 +1,231 @@
+#!/usr/bin/python3
+
+import asyncio
+import atexit
+import json
+import os
+import sys
+from collections import defaultdict, OrderedDict
+from datetime import datetime
+
+submod_path = os.path.normpath(os.path.join(os.path.realpath(__file__), "../../submodules"))
+has_submodules = set()
+for repo_path in os.listdir(submod_path):
+	if os.path.exists(os.path.join(submod_path, repo_path, "modules")):
+		sys.path.insert(0, os.path.join(submod_path, repo_path, "modules"))
+		has_submodules.add(repo_path)
+sys.path.insert(0, os.path.normpath(os.path.join(os.path.realpath(__file__), "../../modules")))
+
+import merge.merge_utils as mu
+from merge.config import Configuration
+from merge.merge_utils import AsyncMergeAllKits, updateKit
+from merge.merge_utils import KitStabilityRating, KitType, KitRatingString
+
+if True:
+#"pyservices" not in has_submodules:
+	hub_client = None
+
+	def send_msg(json_dict):
+		pass
+
+else:
+	print("Initializing pyservices.")
+	from pyservices.zmq.http_server import HubClient, HubClientMode
+	from pyservices.zmq.zmq_msg_breezyops import BreezyMessage, MessageType
+	hub_client = HubClient("merge-scripts", mode=HubClientMode.EXTERNAL)
+
+	def send_msg(json_dict):
+		if "pyservices" not in has_submodules:
+			return
+		msg_obj = BreezyMessage(
+			service="webhook",
+			action="task-event",
+			msg_type=MessageType.INFO,
+			json_dict=json_dict
+		)
+		hub_client.send_nowait(msg_obj)
+
+async def generate_kit_metadata(foundation, release, meta_repo, output_sha1s):
+	"""
+	Generates the metadata in /var/git/meta-repo/metadata/...
+	:param release: the release string, like "1.3-release".
+	:param meta_repo: the meta-repo GitTree.
+	:return: None.
+	"""
+	
+	if not os.path.exists(meta_repo.root + "/metadata"):
+		os.makedirs(meta_repo.root + "/metadata")
+	
+	with open(meta_repo.root + "/metadata/kit-sha1.json", "w") as a:
+		a.write(json.dumps(output_sha1s, sort_keys=True, indent=4, ensure_ascii=False))
+	
+	outf = meta_repo.root + "/metadata/kit-info.json"
+
+	with open(outf, 'w') as a:
+		k_info = {}
+		out = []
+		out_settings = defaultdict(lambda: defaultdict(dict))
+		for kit_dict in foundation.kit_groups[release]:
+			kit_name = kit_dict["name"]
+			if kit_name not in out:
+				out.append(kit_name)
+			# specific keywords that can be set for each branch to identify its current quality level
+			out_settings[kit_name]['stability'][kit_dict["branch"]] = KitRatingString(kit_dict["stability"])
+			out_settings[kit_name]['type'] = kit_dict["type"].value if "type" in kit_dict else KitType.AUTOMATICALLY_GENERATED.value
+		k_info["kit_order"] = out
+		k_info["kit_settings"] = out_settings
+		
+		# auto-generate release-defs. We used to define them manually in foundation:
+
+		kit_name_set = OrderedDict()
+		for kit_dict in foundation.kit_groups[release]:
+			kit_name_set[kit_dict["name"]] = True
+
+		rdefs = {}
+		for kit_name in kit_name_set.keys():
+			rdefs[kit_name] = []
+			for def_kit in filter(lambda x: x["name"] == kit_name and x["stability"] not in [KitStabilityRating.DEPRECATED], foundation.kit_groups[release]):
+				rdefs[kit_name].append(def_kit["branch"])
+	
+		if release in ["1.2-release"]:
+			# metadata format version 1:
+			k_info["release_defs"] = {"1.2": rdefs }
+		else:
+			# newer metadata format version 10: drop release version dict:
+			k_info["release_defs"] = rdefs
+		k_info["release_info"] = getattr(foundation, "release_info", None)
+		a.write(json.dumps(k_info, sort_keys=True, indent=4, ensure_ascii=False))
+	
+	with open(meta_repo.root + "/metadata/version.json", "w") as a:
+		a.write(json.dumps(foundation.metadata_version_info[release], sort_keys=True, indent=4, ensure_ascii=False))
+
+
+class KitQualityError(Exception):
+	
+	pass
+
+
+async def kit_qa_check(foundation):
+
+	# Make sure we don't redefine the same kit branch -- it's bad.
+	
+	all_kit_branches = defaultdict(dict)
+	independent_kits = defaultdict(set)
+	for release, kit_list in foundation.kit_groups.items():
+		for kit in kit_list:
+			if "type" in kit and kit["type"] == KitType.INDEPENDENTLY_MAINTAINED:
+				independent_kits[kit["name"]].add(kit["branch"])
+				continue
+			kit_name = kit["name"]
+			kit_branch = kit["branch"]
+			if kit_branch in all_kit_branches[kit_name]:
+				raise KitQualityError("Kit %s branch %s is defined multiple times. Exiting." % (kit_name, kit_branch))
+			if kit_name in independent_kits:
+				raise KitQualityError("Kit %s is already tagged as independently-maintained but auto-generated entry exists. This is not allowed. Exiting." % kit_name)
+			all_kit_branches[kit_name][kit_branch] = kit
+	return True
+
+
+async def main_thread(config, args):
+
+	if hub_client is not None:
+		asyncio.create_task(hub_client.start())
+	# one global timestamp for each run of this tool -- for mysql db
+	now = datetime.utcnow()
+
+	send_msg({
+		"task": "merge-all-kits",
+		"event": "started",
+		"arguments": sys.argv,
+	})
+
+	fixup_repo = mu.GitTree("kit-fixups", config.branch("kit-fixups"),  config=config, url=config.kit_fixups, root=config.source_trees + "/kit-fixups")
+	await fixup_repo.initialize()
+	meta_repo = mu.GitTree("meta-repo", config.branch("meta-repo"), config=config, url=config.base_url("meta-repo"), root=config.dest_trees + "/meta-repo", mirror = config.mirror.rstrip("/") + "/meta-repo" if config.mirror else None, origin_check=True, destfix=args.destfix)
+	await meta_repo.initialize()
+	
+	# once the correct branch is checked out, then we want to do this import:
+	sys.path.insert(0, fixup_repo.root + "/modules")
+	from fixups.foundations import KitFoundation
+
+	foundation = KitFoundation(config, KitStabilityRating, KitType)
+	push = not args.nopush
+
+	await kit_qa_check(foundation)
+
+	num_threads = 40
+	async_engine = None
+	
+	if args.db is True:
+		async_engine = AsyncMergeAllKits(num_threads=num_threads)
+		async_engine.start_threads(enable_workers=True if num_threads != 0 else False)
+		atexit.register(async_engine.exit_handler)
+		
+	if args.release == "all":
+		releases = foundation.kit_groups.keys()
+	else:
+		if args.release not in foundation.kit_groups.keys():
+			print("Error: cannot find release \"%s\"." % args.release)
+			sys.exit(1)
+		else:
+			releases = [args.release]
+
+	for release in releases:
+		
+		cpm_logger = mu.CatPkgMatchLogger(log_xml=push)
+		if not release.endswith("-release"):
+			continue
+		
+		target_branch = "master" if release == "1.2-release" else release
+		await meta_repo.gitCheckout(target_branch)
+		
+		output_sha1s = defaultdict(lambda: defaultdict(dict))
+		prev_kit_dict = None
+		
+		for kit_dict in foundation.kit_groups[release]:
+			print("Regenerating kit ", kit_dict)
+			head = await updateKit(foundation, config, release, async_engine, kit_dict, prev_kit_dict, cpm_logger, create=not push, destfix=args.destfix, push=push, now=now, fixup_repo=fixup_repo, indypush=args.indypush)
+			kit_name = kit_dict["name"]
+			output_sha1s[kit_name][kit_dict["branch"]] = head
+			prev_kit_dict = kit_dict
+		await generate_kit_metadata(foundation, release, meta_repo, output_sha1s)
+		await meta_repo.gitCommit(message="kit updates", push=False)
+		if args.xmlout:
+			cpm_logger.writeXML(args.xmlout)
+	
+	if push is True:
+		print("Pushing meta-repo...")
+		await meta_repo.gitMirrorPush()
+
+	elapsed_time = datetime.utcnow() - now
+
+	send_msg({
+		"task": "merge-all-kits",
+		"event": "complete",
+		"arguments": sys.argv,
+		"elapsed-time": {
+			"days": elapsed_time.days,
+			"seconds": elapsed_time.seconds,
+			"microseconds": elapsed_time.microseconds
+		}
+	})
+
+if __name__ == "__main__":
+	import argparse
+	
+	parser = argparse.ArgumentParser()
+	parser.add_argument("release", type=str, default="all", nargs="?", help="specify release to generate. Defaults to 'all'.")
+	parser.add_argument("--nopush", action="store_true", help="Don't push changes upstream at all.")
+	parser.add_argument("--db", action="store_true", help="Connect to fastpull database to update to-be-fetched file list.")
+	parser.add_argument("--indypush", action="store_true", help="Push up independent kits (good for developer mode.)")
+	parser.add_argument("--destfix", action="store_true", help="Auto-fix invalid git destinations.)")
+	parser.add_argument("--config", type=str, default=None, help="Specify config file. Defaults to ~/.merge.")
+	parser.add_argument("--xmlout", type=str, default=None, help="Specify where to write XML package info (default: don't)")
+	args = parser.parse_args()
+
+	config = Configuration(args.config)
+	loop = asyncio.get_event_loop()
+	loop.run_until_complete(main_thread(config, args))
+	sys.exit(0)
+
+# vim: ts=4 sw=4 noet tw=140

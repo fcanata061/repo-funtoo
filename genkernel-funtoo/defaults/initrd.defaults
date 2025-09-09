@@ -1,0 +1,136 @@
+#!/bin/sh
+
+PATH="/usr/sbin:/usr/bin:/sbin:/bin"
+
+# Insert ctrl character
+# ctrl-V then esc will print ^[
+# ctrl-V then ctrl-shift-m will print ^M
+BACK_UP="\033[1K\033[0G"
+WARN="\033[33;1m"
+BAD="\033[31;1m"
+BOLD="\033[1m"
+GOOD="\033[32;1m"
+
+# Sets the default collation order
+LC_COLLATE=C
+# From KNOPPIX LINUXRC
+# Reset fb color mode
+RESET="]R"
+# ANSI COLORS
+# Erase to end of line
+CRE="
+[K"
+# Clear and reset Screen
+CLEAR="c"
+# Normal color
+NORMAL="[0;39m"
+# RED: Failure or error message
+RED="[1;31m"
+# GREEN: Success message
+GREEN="[1;32m"
+# YELLOW: Descriptions
+YELLOW="[1;33m"
+# BLUE: System mesages
+BLUE="[1;34m"
+# MAGENTA: Found devices or drivers
+MAGENTA="[1;35m"
+# CYAN: Questions
+CYAN="[1;36m"
+# BOLD WHITE: Hint
+WHITE="[1;37m"
+
+# Clear screen with colormode reset
+# echo "$CLEAR$RESET"
+# echo "$CLEAR"
+# Just go to the top of the screen
+# printf "[H[J"
+
+KV=$(uname -r)
+KMAJOR=$(echo $KV | cut -f1 -d.)
+KMINOR=$(echo $KV | cut -f2 -d.)
+KVER="${KMAJOR}.${KMINOR}"
+MISCOPTS='debug detect'
+
+QUIET=''
+ROOT_LINKS='bin sbin lib lib32 lib64 boot usr opt emul'
+ROOT_TREES='etc root home var'
+
+REAL_ROOT=''
+CONSOLE='/dev/console'
+NEW_ROOT='/newroot'
+no_umounts='/newroot|/mnt/aufs-dev|/mnt/aufs-rw-branch|/mnt/livecd|/mnt/cdrom|/.unions/memory|/.unions/memory/xino'
+ROOTDELAY=5
+CDROOT='0'
+CDROOT_DEV=''
+CDROOT_TYPE='auto'
+CDROOT_PATH='/mnt/cdrom'
+# This is the file that the cdroot will be checked for as a
+# marker. It must exist RELATIVE to the cdroot.
+CDROOT_MARKER='/livecd'
+VERIFY=0
+
+IP='dhcp'
+GK_BOOTFONT_DISABLED=0
+GK_DEBUGMODE_STATEFILE="/tmp/debug.enabled"
+GK_HW_LOAD_ALL_MODULES=0
+GK_INIT_LOG='/tmp/init.log'
+GK_INIT_LOG_COPYTO=
+GK_INIT_LOG_COPYTO_DEFAULT='/genkernel-boot.log'
+GK_INIT_LOG_DISABLED='/tmp/no-init.log'
+GK_INIT_LOG_PREFIX=
+GK_NET_DHCP_PIDFILE='/var/run/udhcpc.pid'
+GK_NET_DHCP_RETRIES=3
+GK_NET_GW=
+GK_NET_IFACE='eth0'
+GK_NET_LOCKFILE='/tmp/network.started'
+GK_NET_ROUTES=
+GK_NET_TIMEOUT_DAD=10
+GK_NET_TIMEOUT_DECONFIGURATION=10
+GK_NET_TIMEOUT_DHCP=10
+GK_NET_TIMEOUT_INTERFACE=10
+GK_PROMPT_FILE='/tmp/current_prompt'
+GK_PROMPT_TIMEOUT=0
+GK_SHELL_LOCKFILE='/tmp/rescueshell.lock'
+GK_SSHD_LOCKFILE='/tmp/remote-rescueshell.lock'
+GK_SSHD_PIDFILE='/var/run/dropbear.pid'
+GK_SSHD_PORT=22
+GK_SSHD_WAIT=
+
+CRYPT_ENV_FILE='/etc/CRYPT_ENV.conf'
+CRYPT_KEYFILE_ROOT='/tmp/root.key'
+CRYPT_KEYFILE_SWAP='/tmp/swap.key'
+CRYPT_ROOT_OPENED_LOCKFILE='/tmp/ROOT.opened'
+CRYPT_SWAP_OPENED_LOCKFILE='/tmp/SWAP.opened'
+
+# Flag for if ok when using CDROOT
+got_good_root='0'
+# if LOOP found on root before mount, trigger Unpacking additional packages
+got_loop_wo_mount='0'
+
+# AUFS variables
+aufs=0
+aufs_union_file=/livecd.aufs
+aufs_modules_dir=mnt/cdrom
+
+# Overlayfs variables
+overlayfs=0
+overlayfs_modules_dir=mnt/cdrom
+
+LOOPS='/livecd.loop /zisofs /livecd.squashfs /image.squashfs /livecd.gcloop'
+
+DEFAULT_NFSOPTIONS="ro,nolock"
+
+# HWOPTS is the list of ALL options that take do/no prefixes, almost all of
+# which match a MODULES_* variable; it is ALSO the order of evaluation.
+#
+# The following entries are special behavior, rather than module loading
+# - keymap
+# - cache
+# - modules
+HWOPTS_BLK='nvme sata scsi pata usb firewire waitscan'
+HWOPTS_OBSOLETE='pcmcia ataraid' # Obsolete stuff that might be useful on old hardware, do$X only.
+HWOPTS="keymap cache modules virtio hyperv ${HWOPTS_BLK} bcache lvm dmraid multipath mdadm zfs fs iscsi crypto"
+
+# This is the set of default HWOPTS, in the order that they are loaded.
+# This is whitespace aligned with HWOPTS above.
+MY_HWOPTS="          modules virtio hyperv ${HWOPTS_BLK}        lvm dmraid           mdadm     fs       crypto"

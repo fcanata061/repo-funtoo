@@ -1,0 +1,5 @@
+# x86 module groups for genkernel initramfs auto-loading
+# (extending defaults/modules_load)
+
+# Crypto
+MODULES_CRYPTO+=" crc32c-intel crc32-pclmul aes_586 aesni-intel"

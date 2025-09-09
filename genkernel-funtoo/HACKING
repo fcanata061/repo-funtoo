@@ -1,0 +1,44 @@
+# $Id$
+
+This document is a work-in-progress to describe the workflow through the various
+parts of genkernel so that we can split the code into modular chunks.  If you
+are interested in helping with genkernel development, please get in touch at
+<genkernel@gentoo.org>.
+
+Phases:
+
+- read configs
+- source global scripts
+- 
+
+Testing things:
+  $ cd genkernel
+  $ sudo GK_SHARE="$PWD" ./genkernel initramfs --no-install --no-postclear --loglevel=2
+
+Rolling a release:
+- export PV="NEWVER"
+- Bump the version in the main genkernel file:
+- sed -i "/^GK_V=/s/='.*'$/='$PV'/" genkernel
+- make dist UNCLEAN=1 # verify it can build.
+- git commit -s -a -m "Bump version to ${PV}"
+- git tag -s -a -m "Tag release v${PV}" v${PV}
+- make dist # Real tarball
+- git push ${REMOTE} master --tags
+- upload genkernel-${PV}.tar.xz to the hosting:
+    scp genkernel-${PV}.tar.xz ${USER}@dev.gentoo.org:/space/distfiles-local/
+- copy to portage's DISTDIR so you can bump the ebuild
+  before the tarball hits distfile mirrors
+  - cp genkernel-${PV}.tar.xz /usr/portage/distfiles/
+- Bump the ebuild
+- Propagate ebuild changes to the live ebuild
+    diff genkernel-${OLD_PV}.ebuild genkernel-${NEW_PV}.ebuild | patch genkernel-9999.ebuild
+- check open bugs with keyword "InSVN" or "InVCS" for closability
+  and close these bugs with a comment like "Fixed in ${PV}, just released.  Closing."
+- Send a mail with subject "genkernel ${PV} released" to both
+  <gentoo-genkernel@lists.gentoo.org> and <genkernel@gentoo.org>.
+  Use
+
+    PREV_TAG=$(git tag -l | tail -n 2 | head -n 1) \
+    git shortlog ${PREV_TAG}..v${PV} | xsel
+
+  to generate the mail body.

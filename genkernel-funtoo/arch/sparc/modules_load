@@ -1,0 +1,2 @@
+# sparc module groups for genkernel initramfs auto-loading
+# (extending defaults/modules_load)
