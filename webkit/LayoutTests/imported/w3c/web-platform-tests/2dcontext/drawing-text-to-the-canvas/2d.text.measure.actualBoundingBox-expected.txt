@@ -1,6 +1,0 @@
-2d.text.measure.actualBoundingBox
-Testing actualBoundingBox
-Actual output:
-
-FAIL Testing actualBoundingBox The string did not match the expected pattern.
-

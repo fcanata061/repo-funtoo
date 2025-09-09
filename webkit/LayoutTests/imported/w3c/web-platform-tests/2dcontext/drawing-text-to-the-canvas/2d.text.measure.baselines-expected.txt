@@ -1,6 +1,0 @@
-2d.text.measure.baselines
-Testing baselines
-Actual output:
-
-FAIL Testing baselines The string did not match the expected pattern.
-
