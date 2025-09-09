@@ -1,0 +1,4 @@
+PATH="/opt/pgi/linux86-64/18.4/bin:/opt/pgi/linux86-64/18.4/mpi/openmpi/bin:/opt/pgi/linux86-64/18.4/mpi/mvapich/bin"
+ROOTPATH="/opt/pgi/linux86-64/18.4/bin:/opt/pgi/linux86-64/18.4/mpi/openmpi/bin:/opt/pgi/linux86-64/18.4/mpi/mvapich/bin"
+LDPATH="/opt/pgi/linux86-64/18.4/lib:/opt/pgi/linux86-64/18.4/mpi/openmpi/lib"
+MANPATH="/opt/pgi/linux86-64/18.4/man"

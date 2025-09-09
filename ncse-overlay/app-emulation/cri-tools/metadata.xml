@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<longdescription lang="en">
+		CLI and validation tools for Kubelet Container Runtime Interface (CRI).
+	</longdescription>
+	<maintainer type="project">
+		<email>kubernetes-incubator@github.com</email>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">kubernetes-incubator/cri-tools</remote-id>
+	</upstream>
+</pkgmetadata>

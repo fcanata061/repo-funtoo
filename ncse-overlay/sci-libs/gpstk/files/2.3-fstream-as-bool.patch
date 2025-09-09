@@ -1,0 +1,24 @@
+diff -u -r -N a/dev/lib/Rxio/ObsReader.cpp b/dev/lib/Rxio/ObsReader.cpp
+--- a/lib/Rxio/ObsReader.cpp	2018-04-09 08:12:18.263047809 -0400
++++ b/lib/Rxio/ObsReader.cpp	2018-04-09 08:28:20.375531511 -0400
+@@ -229,15 +229,15 @@
+    ObsReader::operator bool ()
+    {
+       if (inputType == FFIdentifier::tRinexObs)
+-         return ros;
++         return ros.good();
+       else if (inputType == FFIdentifier::tMDP)
+-         return mdps;
++         return mdps.good();
+       else if (inputType == FFIdentifier::tSMODF)
+-         return smos;
++         return smos.good();
+       else if (inputType == FFIdentifier::tNovatelOem)
+-         return novas;
++         return novas.good();
+       else if (inputType == FFIdentifier::tAshtechSerial)
+-         return ashs;
++         return ashs.good();
+       return false;
+    }
+ 

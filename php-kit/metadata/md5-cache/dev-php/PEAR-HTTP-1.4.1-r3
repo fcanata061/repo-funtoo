@@ -1,0 +1,13 @@
+DEFINED_PHASES=install postinst postrm prepare test
+DEPEND=test? ( dev-php/PEAR-PEAR ) >=app-portage/elt-patches-20170317
+DESCRIPTION=Miscellaneous HTTP utilities
+EAPI=6
+HOMEPAGE=https://pear.php.net/package/HTTP
+IUSE=test
+KEYWORDS=alpha amd64 hppa ia64 ppc ppc64 sparc x86
+LICENSE=BSD
+RDEPEND=>=dev-php/pear-1.8.1
+SLOT=0
+SRC_URI=https://pear.php.net/get/HTTP-1.4.1.tgz
+_eclasses_=epatch	8233751dc5105a6ae8fcd86ce2bb0247	epunt-cxx	e99babeaa7d98c1caaa6a61a79902210	estack	5ac2a138d0b33354b764d84f9e835db8	eutils	1fb064d93b3ffd05c2fb19ef430a4aa1	ltprune	2770eed66a9b8ef944714cd0e968182e	multilib	97f470f374f2e94ccab04a2fb21d811e	php-pear-r2	1c6bbbe590c7180b04898664cc4dd98b	toolchain-funcs	6eb35f81556258a4bc9182ad3dfd58ee
+_md5_=3bb98f96f19ef601ba4d1551fa4568c2

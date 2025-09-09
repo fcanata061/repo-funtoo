@@ -1,0 +1,318 @@
+#!/usr/bin/env bash
+
+# Set a reasonable umask and turn off aliases that may interfere with the operation of the script:
+
+umask 022
+unalias -a
+die() { echo -e "\033[1;31m>>> \033[0m$@" 1>&2; exit 1; }
+einfo() { echo -e "\033[1;32m>>> \033[0m$@"; }
+eerror() { echo -e "\033[1;35m!!! \033[0m$@"; }
+eend() { return 0; }
+try() { einfo "$@"; "$@" || die "Error running command: $@"; }
+
+# specify a catpkg like so: sys-apps/foo:1.0
+CATEGORY=${1%%/*}
+PV=${1##*:}
+PN=${1##*/}
+PN=${PN%%:*}
+P=$PN-$PV
+if [ -z "$2" ]; then
+	die "Please specify an action to perform."
+fi
+action="$2"
+
+source_file() {
+	local prefix="$1"
+	shift
+	for fn in "$@"
+	do
+		fn="$prefix/$fn"
+		[ ! -r "${fn}" ] && die "File $fn not found. Exiting."
+		einfo "Reading ${fn}..."
+		source "${fn}"
+	done
+}
+
+source_link() {
+	[ ! -L "$2" ] && die "Symbolic link $2 does not exist."
+	[ ! -d "$2" ] && die "Target of symbolic link $2 does not exist or is not a directory."
+	eval $1="$(readlink -f $2)"
+}
+
+# Configure application name and core config path:
+
+cfgpath="$(pwd)/etc"
+
+# Read in base config settings and set main paths:
+
+source_file "$cfgpath/globals"
+source_link PORTDIR $cfgpath/portdir
+source_link DISTDIR $cfgpath/distdir
+source_link WORKDIR $cfgpath/workdir
+ORIGDIR="$(pwd)"
+IMAGEDIR="${WORKDIR}/temp/$P/image"
+export T="${WORKDIR}/temp/$P/tmp"
+export WORKDIR="${WORKDIR}/temp/$P/work"
+export FILESDIR=$PORTDIR/$CATEGORY/$PN/files
+install -d "$WORKDIR"
+export S="$WORKDIR/$P"
+install -d $T
+
+# Set reasonable defaults:
+
+export NUMCPU="$(grep -c '^processor' /proc/cpuinfo)" 
+if [ -z "${MAKEOPTS}" ]; then
+	export MAKEOPTS="--jobs=$NUMCPU"
+fi
+
+. eclass/estack.eclass
+. eclass/epatch.eclass
+
+pkg_setup() {
+	return
+}
+
+src_clean() {
+	if [ -d "${WORKDIR}" ]; then
+		einfo "Cleaning old sources ..."
+		rm -rf "${WORKDIR}"
+	fi
+	install -d "${WORKDIR}"; cd "${WORKDIR}"
+}
+
+src_fetch() {
+	# Check is we already have sources downloaded.
+	# todo: need checksum check or something.
+	for source in $SRC_URI; do
+		if ! [ -f "${DISTDIR}/${source##*/}" ]; then
+			if [ "${source: -1}" == "?" ]; then
+				continue
+			fi
+			case "${source}" in
+				http://*|https://*|ftp://*)
+					einfo "Fetching ${source##*/} ..."
+					wget "${source}" -O "${DISTDIR}/${source##*/}"
+					if ! [ -s "${DISTDIR}/${source##*/}" ]; then
+						rm -f "${DISTDIR}/${source##*/}"
+						die "Unable to fetch ${source##*/}."
+					fi
+				;;
+				\)|\():
+					# skip parens
+					continue
+					;;
+				*)
+					die "You have to provide '${source##*/}'."
+				;;
+			esac
+		fi
+	done; unset source
+}
+
+unpack() {
+	for source in $*; do
+		einfo "Extracting ${DISTDIR}/"${source##*/}" ..."
+		try tar xf "${DISTDIR}/${source##*/}" -C "${WORKDIR}"
+	done
+}
+
+pax-mark() {
+	return 0
+}
+
+compiler_auto_enable() {
+	return 0
+}
+
+src_prepare() {
+	return 0
+}
+
+src_unpack() {
+	echo "in unpack"
+	for source in "${sources[@]}"; do
+		echo "processing $source"
+		if ! [ -f "${DISTDIR}/${source##*/}" ]; then die "Missing source '${source##*/}'."; fi
+
+		case "${source##*/}" in
+			*.tar|*.tar.bz2|*.tar.xz|*.tar.gz|l*.tar.lzma)
+				unpack ${source##*/}
+			;;
+			*)
+				die "Unsupported format."
+			;;
+		esac
+	done; unset source
+
+	# I think we should pre-create $S with package name and version and use '--strip-components 1' to tar.
+	# So we can unpack multiple sources file into one $S.
+	[ ! -d "$S" ] && die "Source directory $S specified in \$S does not exist. Exiting."
+	
+	# We should cd into $S before src_configure is done or ebuild will fail when we override src_configure with an ebuild.
+	# like into e2fsprogs-1.18.ebuild.
+	cd "$S"
+}
+
+emake() {
+	try make "$MAKEOPTS" $@
+}
+
+dodir() {
+	install -d $IMAGEDIR/$1
+}
+
+prepstrip() {
+	return
+}
+
+compiler_auto_enable() {
+	return
+}
+
+export EXE_INTO_PATH="/usr/bin"
+exeinto() {
+	export EXE_INTO_PATH=$1
+}
+
+use_driver() {
+
+	local found=0
+	local suffix
+
+	for x in $USE; do
+		if [ "$x" == "$2" ]; then
+			found=1
+			break
+		fi
+	done
+
+	if [ -n "$3" ]; then
+		suffix="$3"
+	else
+		suffix="$2"
+	fi
+
+	if [ $found -eq 1 ]; then
+		echo "--${1%%:*}-${suffix}"
+	else
+		echo "--${1##*:}-${suffix}"
+	fi
+}
+
+use_with() {
+	use_driver with:without $@
+}
+
+use_enable() {
+	use_driver enable:disable $@
+}
+
+use() {
+	for x in $USE; do
+		if [ "$x" == "$1" ]; then
+			return 0
+		fi
+	done
+	return 1
+}
+
+doexe() {
+	install -d $IMAGEDIR/$EXE_INTO_PATH
+	cp $1 $IMAGEDIR/$EXE_INTO_PATH
+}
+
+has() {
+	if [ "$1" == "noinfo" ]; then
+		return 0
+	elif [ "$1" == "noman" ]; then
+		return 0
+	else
+		return 1
+	fi
+}
+
+src_compile() {
+	einfo "Compiling source ..."
+	# Shoudn't we drop MAKEOPTS in favor of MAKEFLAGS variable which make use by default?
+	cd "$S"; try make "$MAKEOPTS"
+}
+
+
+
+src_configure() {
+	einfo "Configuring source ..."
+	cd "$S"; [ -e ./configure ] && econf
+}
+
+src_install() {
+	einfo "Installing into '$IMAGEDIR' ..."
+	cd "$S"; try make DESTDIR="$IMAGEDIR" install
+}
+
+econf() {
+	try ./configure \
+		--prefix=/usr \
+		--mandir=/usr/share/man \
+		--infodir=/usr/share/info \
+		--datadir=/usr/share \
+		--sysconfdir=/etc \
+		--localstatedir=/var/lib \
+		--disable-dependency-tracking \
+		"$@"
+}
+
+# process ebuild
+
+if [ -e "$PORTDIR/$CATEGORY/$PN/defaults" ]; then
+	source_file "$PORTDIR/$CATEGORY/$PN" "defaults"
+fi
+source_file "$PORTDIR/$CATEGORY/$PN" "$PV"
+
+pkg_setup
+case "${action}" in
+	clean)
+		src_clean
+		;;
+	fetch)
+		src_fetch
+		;;
+	unpack)
+		src_clean
+		src_fetch
+		src_unpack
+		;;
+	prepare)
+		src_clean && \
+		src_fetch && \
+		src_unpack && \
+		src_prepare
+		;;
+	configure)
+		src_clean && \
+		src_fetch && \
+		src_unpack && \
+		src_prepare && \
+		src_configure
+		;;
+	compile)
+		src_clean && \
+		src_fetch && \
+		src_unpack && \
+		src_prepare && \
+		src_configure && \
+		src_compile
+		;;
+	install|all)
+		src_clean && \
+		src_fetch && \
+		src_unpack && \
+		src_prepare && \
+		src_configure && \
+		src_compile && \
+		install -d $IMAGEDIR && \
+		src_install
+		;;
+	*)
+		die "Please specify unpack, configure, compile or all as the second arg"
+		;;
+esac

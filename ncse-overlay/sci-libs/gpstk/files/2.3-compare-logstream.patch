@@ -1,0 +1,24 @@
+diff -u -r -N a/dev/apps/geomatics/JPLeph/convertSSEph.cpp b/dev/apps/geomatics/JPLeph/convertSSEph.cpp
+--- a/apps/geomatics/JPLeph/convertSSEph.cpp	2018-04-09 08:12:18.209047276 -0400
++++ b/apps/geomatics/JPLeph/convertSSEph.cpp	2018-04-09 08:37:33.844991251 -0400
+@@ -203,7 +203,7 @@
+    totaltime = clock()-totaltime;
+    LOG(INFO) << PrgmName << " timing: " << fixed << setprecision(9)
+       << double(totaltime)/double(CLOCKS_PER_SEC) << " seconds.";
+-   if(LOGstrm != cout) cout << PrgmName << " timing: " << fixed << setprecision(9)
++   if(pLOGstrm != &cout) cout << PrgmName << " timing: " << fixed << setprecision(9)
+       << double(totaltime)/double(CLOCKS_PER_SEC) << " seconds." << endl;
+ 
+    return iret;
+diff -u -r -N a/dev/apps/geomatics/JPLeph/testSSEph.cpp b/dev/apps/geomatics/JPLeph/testSSEph.cpp
+--- a/apps/geomatics/JPLeph/testSSEph.cpp	2018-04-09 08:12:18.209047276 -0400
++++ b/apps/geomatics/JPLeph/testSSEph.cpp	2018-04-09 08:37:33.844991251 -0400
+@@ -216,7 +216,7 @@
+    totaltime = clock()-totaltime;
+    LOG(INFO) << PrgmName << " timing: " << fixed << setprecision(9)
+       << double(totaltime)/double(CLOCKS_PER_SEC) << " seconds.";
+-   if(LOGstrm != cout) cout << PrgmName << " timing: " << fixed << setprecision(9)
++   if(pLOGstrm != &cout) cout << PrgmName << " timing: " << fixed << setprecision(9)
+       << double(totaltime)/double(CLOCKS_PER_SEC) << " seconds." << endl;
+ 
+    return iret;

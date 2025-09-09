@@ -1,0 +1,12 @@
+diff -u -r -N a/cmake/CMakeModules/FindOpenJPEG.cmake b/cmake/CMakeModules/FindOpenJPEG.cmake
+--- a/cmake/CMakeModules/FindOpenJPEG.cmake	2018-03-29 14:18:12.244174518 -0400
++++ b/cmake/CMakeModules/FindOpenJPEG.cmake	2018-03-30 09:52:49.953795806 -0400
+@@ -23,6 +23,8 @@
+     openjpeg
+     openjpeg-1.5
+     openjpeg-2.1
++    openjpeg-2.2
++    openjpeg-2.3
+   DOC "Location of OpenJPEG Headers"
+ )
+ FIND_LIBRARY(MINIZIP_LIBRARY NAMES ${MINIZIP_NAMES} )

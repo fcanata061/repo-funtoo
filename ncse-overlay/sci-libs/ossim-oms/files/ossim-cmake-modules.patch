@@ -1,0 +1,13 @@
+diff -u -r -N a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt	2018-04-04 18:48:32.542700570 +0000
++++ b/CMakeLists.txt	2018-04-04 18:48:49.618873938 +0000
+@@ -1,6 +1,9 @@
+ PROJECT(ossim-oms)
+ Message("################## Setting up C OMS library #########################")
+ 
++cmake_policy(SET CMP0017 NEW)
++set(CMAKE_MODULE_PATH "/usr/share/ossim/cmake/CMakeModules" ${CMAKE_MODULE_PATH})
++
+ INCLUDE(OssimVersion)
+ INCLUDE(OssimUtilities)
+ INCLUDE(OssimCommonVariables)

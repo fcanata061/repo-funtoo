@@ -1,0 +1,13 @@
+diff -u -r -N a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt	2018-04-04 19:00:58.077274149 +0000
++++ b/CMakeLists.txt	2018-04-04 19:01:20.677503824 +0000
+@@ -2,6 +2,9 @@
+ 
+ Message("################## Setting up ossim-video library #########################")
+ 
++cmake_policy(SET CMP0017 NEW)
++set(CMAKE_MODULE_PATH "/usr/share/ossim/cmake/CMakeModules" ${CMAKE_MODULE_PATH})
++
+ INCLUDE(OssimVersion)
+ INCLUDE(OssimUtilities)
+ INCLUDE(OssimCommonVariables)

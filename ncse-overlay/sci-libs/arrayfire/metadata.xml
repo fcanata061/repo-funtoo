@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+  <use>
+    <flag name="cpu">Build ArrayFire with a CPU backend</flag>
+    <flag name="cuda">Build ArrayFire with a CUDA backend</flag>
+    <flag name="cuda_compute_20">Compile CUDA Compute Capability 2.0 (Fermi)</flag>
+    <flag name="cuda_compute_30">Compile CUDA Compute Capability 3.0 (Kepler)</flag>
+    <flag name="cuda_compute_32">Compile CUDA Compute Capability 3.2 (Kepler)</flag>
+    <flag name="cuda_compute_35">Compile CUDA Compute Capability 3.5 (Kepler)</flag>
+    <flag name="cuda_compute_37">Compile CUDA Compute Capability 3.7 (Kepler)</flag>
+    <flag name="cuda_compute_50">Compile CUDA Compute Capability 5.0 (Maxwell)</flag>
+    <flag name="cuda_compute_52">Compile CUDA Compute Capability 5.2 (Maxwell)</flag>
+    <flag name="cuda_compute_53">Compile CUDA Compute Capability 5.3 (Maxwell)</flag>
+    <flag name="cuda_compute_60">Compile CUDA Compute Capability 6.0 (Pascal)</flag>
+    <flag name="cuda_compute_61">Compile CUDA Compute Capability 6.1 (Pascal)</flag>
+    <flag name="cuda_compute_62">Compile CUDA Compute Capability 6.2 (Pascal)</flag>
+    <flag name="cuda_compute_70">Compile CUDA Compute Capability 7.0 (Volta)</flag>
+    <flag name="graphics">Build ArrayFire with Forge Graphics</flag>
+    <flag name="nonfree">Build ArrayFire nonfree algorithms</flag>
+    <flag name="opencl">Build ArrayFire with a OpenCL backend</flag>
+    <flag name="unified">Build Backend-Independent ArrayFire API</flag>
+  </use>
+</pkgmetadata>

@@ -1,0 +1,62 @@
+diff -u -r -N a/src/backend/cuda/CMakeLists.txt b/src/backend/cuda/CMakeLists.txt
+--- a/src/backend/cuda/CMakeLists.txt	2017-10-03 17:27:10.000000000 -0400
++++ b/src/backend/cuda/CMakeLists.txt	2018-03-19 07:31:42.689951170 -0400
+@@ -41,12 +41,15 @@
+     MESSAGE(STATUS "You can use -DCOMPUTES_DETECTED_LIST=\"AB;XY\" (semicolon separated list of CUDA Compute versions to enable the specified computes")
+     MESSAGE(STATUS "Individual compute versions flags are also available under CMake Advance options")
+     LIST(APPEND COMPUTES_DETECTED_LIST "30" "50")
+-    IF(${CUDA_VERSION_MAJOR} GREATER 7) # Enable 60 only if CUDA 8 or greater
++    IF(${CUDA_VERSION_MAJOR} GREATER 8) # Enable 70 only if CUDA 9 or greater
++        MESSAGE(STATUS "No computes detected. Fall back to 30, 50, 60, 70")
++        LIST(APPEND COMPUTES_DETECTED_LIST "60" "70")
++    ELSEIF(${CUDA_VERSION_MAJOR} GREATER 7) # Enable 60 only if CUDA 8 or greater
+         MESSAGE(STATUS "No computes detected. Fall back to 30, 50, 60")
+         LIST(APPEND COMPUTES_DETECTED_LIST "60")
+-    ELSE(${CUDA_VERSION_MAJOR} GREATER 7)
++    ELSE()
+         LIST(APPEND COMPUTES_DETECTED_LIST "20")
+-    ENDIF(${CUDA_VERSION_MAJOR} GREATER 7)
++    ENDIF()
+ ENDIF()
+ 
+ LIST(LENGTH COMPUTES_DETECTED_LIST COMPUTES_LEN)
+@@ -65,7 +68,7 @@
+ ENDMACRO(SET_COMPUTE)
+ 
+ # Iterate over compute versions. Create variables and enable computes if needed
+-FOREACH(VER 20 30 32 35 37 50 52 53 60 61 62)
++FOREACH(VER 30 32 35 37 50 52 53 60 61 62 70)
+     OPTION(CUDA_COMPUTE_${VER} "CUDA Compute Capability ${VER}" OFF)
+     MARK_AS_ADVANCED(CUDA_COMPUTE_${VER})
+     IF(${CUDA_COMPUTE_${VER}})
+@@ -87,6 +90,17 @@
+     ENDIF()
+ ENDIF(${CUDA_VERSION_MAJOR} LESS 8)
+ 
++IF(${CUDA_VERSION_MAJOR} LESS 9)
++    IF(   CUDA_COMPUTE_70
++      )
++        MESSAGE(FATAL_ERROR
++                "CUDA Compute 7x was enabled.\
++                 CUDA Compute 7x (Volta) GPUs require CUDA 9 or greater.\
++                 Your CUDA Version is ${CUDA_VERSION}."
++                )
++    ENDIF()
++ENDIF(${CUDA_VERSION_MAJOR} LESS 9)
++
+ IF(UNIX)
+     # GCC 5.3 and above give errors for mempcy from <string.h>
+     # This is a (temporary) fix for that
+@@ -99,8 +113,10 @@
+         # GCC 6.0 and above default to g++14, enabling c++11 features by default
+         # Enabling c++11 with nvcc 7.5 + gcc 6.x doesn't seem to work
+         # Only solution for now is to force use c++03 for gcc 6.x
+-        IF(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "6.0.0")
+-          message( FATAL_ERROR "NVCC does not support GCC version 6.0 or greater." )
++        IF(${CUDA_VERSION_MAJOR} LESS 9)
++          IF(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "6.0.0")
++            message( FATAL_ERROR "NVCC does not support GCC version 6.0 or greater." )
++          ENDIF()
+         ENDIF()
+     ENDIF()
+ 

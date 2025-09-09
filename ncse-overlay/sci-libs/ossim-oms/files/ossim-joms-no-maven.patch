@@ -1,0 +1,18 @@
+diff -u -r -N a/joms/build.xml b/joms/build.xml
+--- a/joms/build.xml	2018-04-06 08:29:53.802571315 -0400
++++ b/joms/build.xml	2018-04-06 08:30:16.424795752 -0400
+@@ -32,14 +32,6 @@
+     <echo message="os.name = ${os.name}"/>
+     <echo message="osg.home = ${osg.home}"/>
+     <echo message="user.home = ${user.home}"/>
+-    <artifact:remoteRepository id="remote.repository" url="${env.OSSIM_MAVEN_PROXY}" />
+-
+-    <artifact:dependencies filesetId="dependency.fileset">
+-      <remoteRepository refid="remote.repository" />
+-
+-      <dependency groupId="org.apache.commons" artifactId="commons-compress" version="1.9"/>
+-      <dependency groupId="commons-lang" artifactId="commons-lang" version="2.6"/>
+-    </artifact:dependencies>
+ 
+   <!-- <copy todir="lib" flatten="true">
+     <fileset refid="dependency.fileset" />

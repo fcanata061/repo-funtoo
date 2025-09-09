@@ -1,0 +1,12 @@
+diff -u -r -N a/dev/lib/Procframe/ProblemSatFilter.cpp b/dev/lib/Procframe/ProblemSatFilter.cpp
+--- a/lib/Procframe/ProblemSatFilter.cpp	2018-04-09 08:12:18.258047759 -0400
++++ b/lib/Procframe/ProblemSatFilter.cpp	2018-04-09 08:12:41.165273905 -0400
+@@ -140,7 +140,7 @@
+          stringstream ss(data);
+          ss >> satellite >> problem >> action;
+          
+-         int s[6]={0.0};
++         int s[6]={0};
+          for(int i=0;i<6;i++) ss >> s[i];
+ 
+          CivilTime tempEpoch(s[0],s[1],s[2],s[3],s[4],double(s[5]));

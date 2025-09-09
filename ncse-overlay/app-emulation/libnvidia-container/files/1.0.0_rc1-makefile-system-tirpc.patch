@@ -1,0 +1,66 @@
+diff --git a/Makefile b/Makefile
+index f46329b..fb0ca57 100644
+--- a/Makefile
++++ b/Makefile
+@@ -120,22 +120,24 @@ LDLIBS   := $(LDLIBS)
+ LIB_CPPFLAGS       = -DNV_LINUX -isystem $(CUDA_DIR)/include -isystem $(DEPS_DIR)$(includedir) -include $(BUILD_DEFS)
+ LIB_CFLAGS         = -fPIC
+ LIB_LDFLAGS        = -L$(DEPS_DIR)$(libdir) -shared -Wl,-soname=$(LIB_SONAME)
+-LIB_LDLIBS_STATIC  = -l:libnvidia-modprobe-utils.a
++LIB_LDLIBS_UTILS   = -l:libnvidia-modprobe-utils.a
+ LIB_LDLIBS_SHARED  = -ldl -lcap
+ ifeq ($(WITH_LIBELF), yes)
+ LIB_CPPFLAGS       += -DWITH_LIBELF
+ LIB_LDLIBS_SHARED  += -lelf
+ else
++LIB_LDLIBS_SHARED  += -l:libelf.a
+ LIB_LDLIBS_STATIC  += -l:libelf.a
+ endif
+ ifeq ($(WITH_TIRPC), yes)
+-LIB_CPPFLAGS       += -isystem $(DEPS_DIR)$(includedir)/tirpc -DWITH_TIRPC
++LIB_CPPFLAGS       += -DWITH_TIRPC
++LIB_LDLIBS_SHARED  += -ltirpc -lpthread
+ LIB_LDLIBS_STATIC  += -l:libtirpc.a
+-LIB_LDLIBS_SHARED  += -lpthread
+ endif
+ ifeq ($(WITH_SECCOMP), yes)
+ LIB_CPPFLAGS       += -DWITH_SECCOMP
+ LIB_LDLIBS_SHARED  += -lseccomp
++LIB_LDLIBS_STATIC  += -l:libseccomp.a
+ endif
+ LIB_CPPFLAGS       += $(CPPFLAGS)
+ LIB_CFLAGS         += $(CFLAGS)
+@@ -183,21 +185,18 @@ $(BIN_OBJS): %.o: %.c | shared
+ 
+ $(LIB_SHARED): $(LIB_OBJS)
+ 	$(MKDIR) -p $(DEBUG_DIR)
+-	$(CC) $(LIB_CFLAGS) $(LIB_CPPFLAGS) $(LIB_LDFLAGS) $(OUTPUT_OPTION) $^ $(LIB_SCRIPT) $(LIB_LDLIBS)
++	$(CC) $(LIB_CFLAGS) $(LIB_CPPFLAGS) $(LIB_LDFLAGS) $(OUTPUT_OPTION) $^ $(LIB_SCRIPT) $(LIB_LDLIBS_UTILS) $(LIB_LDLIBS_SHARED)
+ 	$(OBJCPY) --only-keep-debug $@ $(LIB_SONAME)
+ 	$(OBJCPY) --add-gnu-debuglink=$(LIB_SONAME) $@
+ 	$(MV) $(LIB_SONAME) $(DEBUG_DIR)
+-	$(STRIP) --strip-unneeded -R .comment $@
+ 
+ $(LIB_STATIC_OBJ): $(LIB_OBJS)
+ 	# FIXME Handle user-defined LDFLAGS and LDLIBS
+-	$(LD) -d -r --exclude-libs ALL -L$(DEPS_DIR)$(libdir) $(OUTPUT_OPTION) $^ $(LIB_LDLIBS_STATIC)
++	$(LD) -d -r --exclude-libs ALL -L$(DEPS_DIR)$(libdir) $(OUTPUT_OPTION) $^ $(LIB_LDLIBS_UTILS) $(LIB_LDLIBS_STATIC)
+ 	$(OBJCPY) --localize-hidden $@
+-	$(STRIP) --strip-unneeded -R .comment $@
+ 
+ $(BIN_NAME): $(BIN_OBJS)
+ 	$(CC) $(BIN_CFLAGS) $(BIN_CPPFLAGS) $(BIN_LDFLAGS) $(OUTPUT_OPTION) $^ $(BIN_SCRIPT) $(BIN_LDLIBS)
+-	$(STRIP) --strip-unneeded -R .comment $@
+ 
+ ##### Public rules #####
+ 
+@@ -222,9 +221,6 @@ deps: $(LIB_RPC_SRCS) $(BUILD_DEFS)
+ ifeq ($(WITH_LIBELF), no)
+ 	$(MAKE) -f $(MAKE_DIR)/elftoolchain.mk install
+ endif
+-ifeq ($(WITH_TIRPC), yes)
+-	$(MAKE) -f $(MAKE_DIR)/libtirpc.mk install
+-endif
+ 
+ install: all
+ 	$(INSTALL) -d -m 755 $(addprefix $(DESTDIR),$(includedir) $(bindir) $(libdir) $(docdir) $(libdbgdir) $(pkgconfdir))

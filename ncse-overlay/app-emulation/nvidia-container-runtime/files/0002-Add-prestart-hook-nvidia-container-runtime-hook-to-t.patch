@@ -1,0 +1,46 @@
+diff -u -r -N x/src/github.com/opencontainers/runc/utils.go y/src/github.com/opencontainers/runc/utils.go
+--- x/src/github.com/opencontainers/runc/utils.go	2018-05-09 07:46:27.433225884 -0400
++++ y/src/github.com/opencontainers/runc/utils.go	2018-05-09 07:52:53.746771038 -0400
+@@ -3,6 +3,7 @@
+ import (
+ 	"fmt"
+ 	"os"
++    "os/exec"
+ 	"path/filepath"
+ 
+ 	"github.com/opencontainers/runtime-spec/specs-go"
+@@ -52,6 +53,23 @@
+ 	os.Exit(1)
+ }
+ 
++func addNVIDIAHook(context *cli.Context, spec *specs.Spec) error {
++	path, err := exec.LookPath("nvidia-container-runtime-hook")
++	if err != nil {
++		return err
++	}
++	args := []string{path}
++	if context.GlobalBool("debug") {
++		args = append(args, "-debug")
++	}
++	spec.Hooks.Prestart = append(spec.Hooks.Prestart, specs.Hook{
++		Path: path,
++		Args: append(args, "prestart"),
++	})
++
++	return nil
++}
++
+ // setupSpec performs initial setup based on the cli.Context for the container
+ func setupSpec(context *cli.Context) (*specs.Spec, error) {
+ 	bundle := context.String("bundle")
+@@ -64,6 +82,10 @@
+ 	if err != nil {
+ 		return nil, err
+ 	}
++	if err = addNVIDIAHook(context, spec); err != nil {
++		return nil, err
++	}
++
+ 	return spec, nil
+ }
+ 

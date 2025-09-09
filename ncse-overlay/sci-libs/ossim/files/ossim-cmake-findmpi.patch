@@ -1,0 +1,12 @@
+diff -u -r -N a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt	2018-03-29 14:18:12.242174500 -0400
++++ b/CMakeLists.txt	2018-03-29 14:18:35.442378167 -0400
+@@ -164,7 +164,7 @@
+    find_package(MPI)
+    if ( MPI_FOUND )
+       include_directories( ${MPI_INCLUDE_DIR} )
+-      set( ossimDependentLibs ${ossimDependentLibs} ${MPI_LIBRARY} )
++      set( ossimDependentLibs ${ossimDependentLibs} ${MPI_CXX_LIBRARIES} )
+       set( OSSIM_HAS_MPI 1 )
+    else ( MPI_FOUND )
+       message( WARNING "Could not find optional MPI package!" )
