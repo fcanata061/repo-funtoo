@@ -1,0 +1,13 @@
+DEFINED_PHASES=compile configure install prepare test
+DEPEND=!minimal? ( dev-perl/bareword-filehandles dev-perl/indirect dev-perl/multidimensional ) virtual/perl-ExtUtils-MakeMaker test? ( virtual/perl-Test-Simple ) dev-lang/perl:=
+DESCRIPTION=Turn on strict and make most warnings fatal
+EAPI=6
+HOMEPAGE=http://search.cpan.org/dist/strictures/
+IUSE=test minimal
+KEYWORDS=~amd64 ~hppa ~x86 ~ppc-aix ~ppc-macos ~x86-solaris
+LICENSE=|| ( Artistic GPL-1+ )
+RDEPEND=!minimal? ( dev-perl/bareword-filehandles dev-perl/indirect dev-perl/multidimensional ) dev-lang/perl:=
+SLOT=0
+SRC_URI=mirror://cpan/authors/id/H/HA/HAARG/strictures-2.000002.tar.gz
+_eclasses_=multiprocessing	cac3169468f893670dac3e7cb940e045	perl-functions	669a1227009eda227739e1621a158a4d	perl-module	b832e3f37aa64cbdd6f3e98274bef14b
+_md5_=5b6f9c5a8f67adaf321b6f258e8434ab

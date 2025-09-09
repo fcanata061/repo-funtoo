@@ -1,0 +1,13 @@
+DEFINED_PHASES=compile configure install prepare test
+DEPEND=virtual/perl-Carp dev-perl/Dist-Zilla dev-perl/Moose dev-perl/MooseX-Types-Perl dev-perl/PPI dev-perl/namespace-autoclean virtual/perl-ExtUtils-MakeMaker test? ( >=virtual/perl-CPAN-Meta-2.120.900 virtual/perl-File-Spec virtual/perl-IO dev-perl/Path-Tiny virtual/perl-Test-Simple dev-perl/Test-Version ) dev-lang/perl:=
+DESCRIPTION=No line insertion and does Package version with our
+EAPI=6
+HOMEPAGE=http://search.cpan.org/dist/Dist-Zilla-Plugin-OurPkgVersion/
+IUSE=test
+KEYWORDS=~amd64 ~x86
+LICENSE=|| ( Artistic GPL-1+ )
+RDEPEND=virtual/perl-Carp dev-perl/Dist-Zilla dev-perl/Moose dev-perl/MooseX-Types-Perl dev-perl/PPI dev-perl/namespace-autoclean dev-lang/perl:=
+SLOT=0
+SRC_URI=mirror://cpan/authors/id/P/PL/PLICEASE/Dist-Zilla-Plugin-OurPkgVersion-0.10.tar.gz
+_eclasses_=multiprocessing	cac3169468f893670dac3e7cb940e045	perl-functions	669a1227009eda227739e1621a158a4d	perl-module	b832e3f37aa64cbdd6f3e98274bef14b
+_md5_=128c7a18cf2c50717d460ce5d09cab74

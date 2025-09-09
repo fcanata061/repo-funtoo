@@ -1,0 +1,14 @@
+DEFINED_PHASES=compile configure install postinst prepare prerm setup test unpack
+DEPEND=sys-libs/ncurses app-arch/sharutils dev-perl/Astro-FITS-Header dev-perl/File-Map dev-perl/Inline dev-perl/OpenGL dev-perl/TermReadKey || ( dev-perl/Term-ReadLine-Perl dev-perl/Term-ReadLine-Gnu ) virtual/perl-Data-Dumper virtual/perl-Pod-Parser virtual/perl-File-Spec virtual/perl-File-Temp dev-perl/Filter virtual/perl-Storable virtual/perl-Text-Balanced fftw? ( sci-libs/fftw:2.1 ) gd? ( media-libs/gd ) gsl? ( sci-libs/gsl ) hdf? ( sci-libs/hdf ) netpbm? ( media-libs/netpbm virtual/ffmpeg ) pdl2? ( dev-perl/Devel-REPL ) pgplot? ( dev-perl/PGPLOT ) plplot? ( sci-libs/plplot ) fortran? ( >=dev-perl/ExtUtils-F77-1.13 ) >=app-portage/elt-patches-20170317 dev-lang/perl:=[-build(-)] fortran? ( virtual/fortran )
+DESCRIPTION=Perl Data Language for scientific computing
+EAPI=5
+HOMEPAGE=http://search.cpan.org/dist/PDL/
+IUSE=+badval doc fftw fortran gd gsl hdf netpbm pdl2 pgplot plplot threads
+KEYWORDS=amd64 arm ppc x86 ~amd64-linux ~x86-linux
+LICENSE=|| ( Artistic GPL-1+ ) public-domain PerlDL
+RDEPEND=sys-libs/ncurses app-arch/sharutils dev-perl/Astro-FITS-Header dev-perl/File-Map dev-perl/Inline dev-perl/OpenGL dev-perl/TermReadKey || ( dev-perl/Term-ReadLine-Perl dev-perl/Term-ReadLine-Gnu ) virtual/perl-Data-Dumper virtual/perl-Pod-Parser virtual/perl-File-Spec virtual/perl-File-Temp dev-perl/Filter virtual/perl-Storable virtual/perl-Text-Balanced fftw? ( sci-libs/fftw:2.1 ) gd? ( media-libs/gd ) gsl? ( sci-libs/gsl ) hdf? ( sci-libs/hdf ) netpbm? ( media-libs/netpbm virtual/ffmpeg ) pdl2? ( dev-perl/Devel-REPL ) pgplot? ( dev-perl/PGPLOT ) plplot? ( sci-libs/plplot ) dev-lang/perl:=[-build(-)] fortran? ( virtual/fortran )
+REQUIRED_USE=plplot? ( badval )
+SLOT=0
+SRC_URI=mirror://cpan/authors/id/C/CH/CHM/PDL-2.4.11.tar.gz
+_eclasses_=epatch	8233751dc5105a6ae8fcd86ce2bb0247	epunt-cxx	e99babeaa7d98c1caaa6a61a79902210	estack	5ac2a138d0b33354b764d84f9e835db8	eutils	1fb064d93b3ffd05c2fb19ef430a4aa1	fortran-2	22904537daca88dc2685015f9051f0eb	ltprune	2770eed66a9b8ef944714cd0e968182e	multilib	97f470f374f2e94ccab04a2fb21d811e	multiprocessing	cac3169468f893670dac3e7cb940e045	perl-functions	669a1227009eda227739e1621a158a4d	perl-module	b832e3f37aa64cbdd6f3e98274bef14b	toolchain-funcs	6eb35f81556258a4bc9182ad3dfd58ee	unpacker	f40f7b4bd5aa88c2a4ba7b0d1e0ded70
+_md5_=6659a1d7430f0dd426764b7dcfd37266

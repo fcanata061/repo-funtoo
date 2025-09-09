@@ -1,0 +1,13 @@
+DEFINED_PHASES=compile configure install prepare test
+DEPEND=dev-perl/IO-String virtual/perl-Scalar-List-Utils dev-perl/Sub-Exporter dev-perl/asa virtual/perl-parent virtual/perl-ExtUtils-MakeMaker test? ( >=virtual/perl-Test-Simple-1.1.10 ) dev-lang/perl:=
+DESCRIPTION=Functions for working with IO::Handle like objects
+EAPI=6
+HOMEPAGE=http://search.cpan.org/dist/IO-Handle-Util/
+IUSE=test
+KEYWORDS=~amd64 ~x86
+LICENSE=|| ( Artistic GPL-1+ )
+RDEPEND=dev-perl/IO-String virtual/perl-Scalar-List-Utils dev-perl/Sub-Exporter dev-perl/asa virtual/perl-parent dev-lang/perl:=
+SLOT=0
+SRC_URI=mirror://cpan/authors/id/N/NU/NUFFIN/IO-Handle-Util-0.01.tar.gz
+_eclasses_=multiprocessing	cac3169468f893670dac3e7cb940e045	perl-functions	669a1227009eda227739e1621a158a4d	perl-module	b832e3f37aa64cbdd6f3e98274bef14b
+_md5_=1789c05647c38d654bcb619384a460c5

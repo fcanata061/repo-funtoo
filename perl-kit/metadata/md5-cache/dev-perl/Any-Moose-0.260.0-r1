@@ -1,0 +1,13 @@
+DEFINED_PHASES=compile configure install prepare test
+DEPEND=dev-perl/Moose virtual/perl-version >=virtual/perl-ExtUtils-MakeMaker-6.31 test? ( dev-perl/Moose dev-perl/MooseX-Types ) dev-lang/perl:=
+DESCRIPTION=Use Moose or Mouse modules (DEPRECATED)
+EAPI=6
+HOMEPAGE=http://search.cpan.org/dist/Any-Moose/
+IUSE=test
+KEYWORDS=~amd64 ~hppa ~ppc ~x86
+LICENSE=|| ( Artistic GPL-1+ )
+RDEPEND=dev-perl/Moose virtual/perl-version dev-lang/perl:=
+SLOT=0
+SRC_URI=mirror://cpan/authors/id/E/ET/ETHER/Any-Moose-0.26.tar.gz
+_eclasses_=multiprocessing	cac3169468f893670dac3e7cb940e045	perl-functions	669a1227009eda227739e1621a158a4d	perl-module	b832e3f37aa64cbdd6f3e98274bef14b
+_md5_=9a66f96cfac824bb51f76d03fd0c2e7a

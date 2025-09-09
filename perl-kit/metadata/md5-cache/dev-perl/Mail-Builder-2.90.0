@@ -1,0 +1,13 @@
+DEFINED_PHASES=compile configure install prepare test
+DEPEND=dev-perl/Class-Load dev-perl/Email-Address dev-perl/Email-Date-Format >=dev-perl/Email-MessageID-1.400.0 dev-perl/Email-Valid virtual/perl-Encode >=dev-perl/MIME-tools-5.400.0 >=dev-perl/HTML-Tree-3.0.0 dev-perl/MIME-Types >=dev-perl/Moose-0.940.0 dev-perl/Path-Class dev-perl/Text-Table dev-perl/namespace-autoclean >=virtual/perl-ExtUtils-MakeMaker-6.590.0 test? ( dev-perl/Test-Most dev-perl/Test-NoWarnings ) dev-lang/perl:=
+DESCRIPTION=Easily create plaintext/html e-mail messages with attachments and inline images
+EAPI=6
+HOMEPAGE=http://search.cpan.org/dist/Mail-Builder/
+IUSE=examples test
+KEYWORDS=~amd64 ~x86
+LICENSE=|| ( Artistic GPL-1+ )
+RDEPEND=dev-perl/Class-Load dev-perl/Email-Address dev-perl/Email-Date-Format >=dev-perl/Email-MessageID-1.400.0 dev-perl/Email-Valid virtual/perl-Encode >=dev-perl/MIME-tools-5.400.0 >=dev-perl/HTML-Tree-3.0.0 dev-perl/MIME-Types >=dev-perl/Moose-0.940.0 dev-perl/Path-Class dev-perl/Text-Table dev-perl/namespace-autoclean dev-lang/perl:=
+SLOT=0
+SRC_URI=mirror://cpan/authors/id/M/MA/MAROS/Mail-Builder-2.09.tar.gz
+_eclasses_=multiprocessing	cac3169468f893670dac3e7cb940e045	perl-functions	669a1227009eda227739e1621a158a4d	perl-module	b832e3f37aa64cbdd6f3e98274bef14b
+_md5_=3e72413ddb0920dc84bab4147f12390c

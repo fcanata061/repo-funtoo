@@ -1,0 +1,13 @@
+DEFINED_PHASES=compile configure install prepare test
+DEPEND=>=virtual/perl-Digest-MD5-2.360.0 >=dev-perl/Log-Report-1.30.0 >=virtual/perl-MIME-Base64-3.100.0 >=virtual/perl-Math-BigInt-1.770.0 >=virtual/perl-Math-BigRat-0.100.0 virtual/perl-Scalar-List-Utils >=dev-perl/XML-LibXML-2.10.700 virtual/perl-ExtUtils-MakeMaker test? ( >=dev-perl/Test-Deep-0.95.0 >=virtual/perl-Test-Simple-0.540.0 >=dev-perl/XML-Compile-Tester-0.900.0 ) dev-lang/perl:=
+DESCRIPTION=Compilation based XML Processing
+EAPI=6
+HOMEPAGE=http://search.cpan.org/dist/XML-Compile/
+IUSE=test
+KEYWORDS=~amd64 ~x86
+LICENSE=|| ( Artistic GPL-1+ )
+RDEPEND=>=virtual/perl-Digest-MD5-2.360.0 >=dev-perl/Log-Report-1.30.0 >=virtual/perl-MIME-Base64-3.100.0 >=virtual/perl-Math-BigInt-1.770.0 >=virtual/perl-Math-BigRat-0.100.0 virtual/perl-Scalar-List-Utils >=dev-perl/XML-LibXML-2.10.700 dev-lang/perl:=
+SLOT=0
+SRC_URI=mirror://cpan/authors/id/M/MA/MARKOV/XML-Compile-1.54.tar.gz
+_eclasses_=multiprocessing	cac3169468f893670dac3e7cb940e045	perl-functions	669a1227009eda227739e1621a158a4d	perl-module	b832e3f37aa64cbdd6f3e98274bef14b
+_md5_=f1d42727253e544dd622490c7f075af0

@@ -1,0 +1,13 @@
+DEFINED_PHASES=compile configure install prepare test
+DEPEND=!minimal? ( dev-perl/Mozilla-PublicSuffix ) virtual/perl-Carp dev-perl/HTTP-Date >=virtual/perl-Time-Local-1.190.100 virtual/perl-parent >=virtual/perl-ExtUtils-MakeMaker-6.170.0 test? ( !minimal? ( >=virtual/perl-CPAN-Meta-2.120.900 dev-perl/HTTP-Message ) virtual/perl-File-Spec dev-perl/Test-Deep dev-perl/Test-Requires >=virtual/perl-Test-Simple-0.960.0 dev-perl/URI ) dev-lang/perl:=
+DESCRIPTION=A minimalist HTTP user agent cookie jar
+EAPI=6
+HOMEPAGE=http://search.cpan.org/dist/HTTP-CookieJar/
+IUSE=test minimal
+KEYWORDS=~amd64 ~x86
+LICENSE=|| ( Artistic GPL-1+ )
+RDEPEND=!minimal? ( dev-perl/Mozilla-PublicSuffix ) virtual/perl-Carp dev-perl/HTTP-Date >=virtual/perl-Time-Local-1.190.100 virtual/perl-parent dev-lang/perl:=
+SLOT=0
+SRC_URI=mirror://cpan/authors/id/D/DA/DAGOLDEN/HTTP-CookieJar-0.008.tar.gz
+_eclasses_=multiprocessing	cac3169468f893670dac3e7cb940e045	perl-functions	669a1227009eda227739e1621a158a4d	perl-module	b832e3f37aa64cbdd6f3e98274bef14b
+_md5_=2d8f8ea3df453d028247c1f412aa4385

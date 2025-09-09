@@ -1,0 +1,13 @@
+DEFINED_PHASES=compile configure install prepare test
+DEPEND=!libressl? ( dev-libs/openssl:0 ) libressl? ( dev-libs/libressl ) virtual/perl-XSLoader virtual/perl-ExtUtils-MakeMaker dev-perl/ExtUtils-PkgConfig dev-perl/ExtUtils-CChecker >=virtual/perl-ExtUtils-Constant-0.230.0 test? ( dev-perl/Test-Exception virtual/perl-Test-Simple >=dev-perl/Test-Taint-1.60.0 ) dev-lang/perl:=
+DESCRIPTION=S/MIME message signing, verification, encryption and decryption
+EAPI=6
+HOMEPAGE=http://search.cpan.org/dist/Crypt-SMIME/
+IUSE=libressl test
+KEYWORDS=~amd64 ~x86
+LICENSE=|| ( Artistic GPL-1+ )
+RDEPEND=!libressl? ( dev-libs/openssl:0 ) libressl? ( dev-libs/libressl ) virtual/perl-XSLoader dev-lang/perl:=
+SLOT=0
+SRC_URI=mirror://cpan/authors/id/M/MI/MIKAGE/Crypt-SMIME-0.16.tar.gz
+_eclasses_=multiprocessing	cac3169468f893670dac3e7cb940e045	perl-functions	669a1227009eda227739e1621a158a4d	perl-module	b832e3f37aa64cbdd6f3e98274bef14b
+_md5_=9992c41e992daaa5cc87ddd9ae5e34bd

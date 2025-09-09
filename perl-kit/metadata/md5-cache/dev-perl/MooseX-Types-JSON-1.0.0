@@ -1,0 +1,12 @@
+DEFINED_PHASES=compile configure install prepare test
+DEPEND=>=dev-perl/JSON-XS-2.00 dev-perl/Moose dev-perl/MooseX-Types dev-lang/perl:=
+DESCRIPTION=JSON datatype for Moose
+EAPI=6
+HOMEPAGE=http://search.cpan.org/dist/MooseX-Types-JSON/
+KEYWORDS=~amd64 ~x86
+LICENSE=|| ( Artistic GPL-1+ )
+RDEPEND=>=dev-perl/JSON-XS-2.00 dev-perl/Moose dev-perl/MooseX-Types dev-lang/perl:=
+SLOT=0
+SRC_URI=mirror://cpan/authors/id/M/MI/MILA/MooseX-Types-JSON-1.00.tar.gz
+_eclasses_=multiprocessing	cac3169468f893670dac3e7cb940e045	perl-functions	669a1227009eda227739e1621a158a4d	perl-module	b832e3f37aa64cbdd6f3e98274bef14b
+_md5_=7f86c420d4dec8a2cd47b5dfcc3f1d46

@@ -1,0 +1,13 @@
+DEFINED_PHASES=compile configure install prepare test
+DEPEND=dev-perl/MP3-Info virtual/perl-ExtUtils-MakeMaker dev-lang/perl:=
+DESCRIPTION=Module for reading tags of MP3 Audio files
+EAPI=6
+HOMEPAGE=http://search.cpan.org/dist/MP3-Tag/
+IUSE=examples
+KEYWORDS=~amd64 ~arm ~ppc ~ppc64 ~x86 ~x86-fbsd ~x86-freebsd ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~x86-solaris
+LICENSE=Artistic
+RDEPEND=dev-perl/MP3-Info dev-lang/perl:=
+SLOT=0
+SRC_URI=mirror://cpan/authors/id/I/IL/ILYAZ/modules/MP3-Tag-1.14.tar.gz
+_eclasses_=multiprocessing	cac3169468f893670dac3e7cb940e045	perl-functions	669a1227009eda227739e1621a158a4d	perl-module	b832e3f37aa64cbdd6f3e98274bef14b
+_md5_=948e0b0181d997208ab587f69d715145

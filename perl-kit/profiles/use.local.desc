@@ -1,0 +1,42 @@
+# This file is deprecated as per GLEP 56 in favor of metadata.xml. Please add
+# your descriptions to your package's metadata.xml ONLY.
+# * generated automatically using egencache *
+
+dev-lang/perl:ithreads - Enable Perl threads, has some compatibility problems
+dev-perl/App-Nopaste:clipboard - copying of URLs with -x/--copy
+dev-perl/App-Nopaste:github - Github authentication
+dev-perl/App-Nopaste:pastebin - pastebin.com support
+dev-perl/Business-ISBN:barcode - Install dev-perl/GD-Barcode for rendering ISBN numbers as barcodes
+dev-perl/Business-ISBN:xisbn - Install dev-perl/Mojolicious for querying xisbn.worldcat.org
+dev-perl/Convert-UUlib:system-uulib - Use dev-libs/uulib instead of bundled version.
+dev-perl/DBD-SQLite:system-sqlite - Use the system-wide dev-db/sqlite installation
+dev-perl/DBD-mysql:embedded - Support embedded server (libmysqld)
+dev-perl/DBD-mysql:ssl - Compile in support for SSL connections via libmysqlclient
+dev-perl/DBIx-Class:admin - Modules required for the DBIx::Class administrative library
+dev-perl/DBIx-Class:admin_script - Modules required for the CLI DBIx::Class interface dbicadmin
+dev-perl/DBIx-Class:deploy - Modules required for "deploy" in DBIx::Class::Storage::DBI and "deploymen_statements" in DBIx::Class::Storage::DBI
+dev-perl/DBIx-Class:replicated - Modules required for DBIx::Class::Storage::DBI::Replicated
+dev-perl/File-HomeDir:xdg - Ensure XDG Semantics for returned paths via x11-misc/xdg-user-dirs
+dev-perl/File-Which:pwhich - Install dev-perl/App-pwhich which used to be a part of this package
+dev-perl/GD:animgif - Enable animated gif support
+dev-perl/Graphics-ColorNames:recommended - Install recommended support modules
+dev-perl/HTML-Mason:modperl - Enable www-apache/mod_perl support
+dev-perl/Lab-Measurement:xpression - Install the Xpression measurement framework
+dev-perl/Mail-IMAPClient:md5 - Install support for DIGEST-MD5 and CRAM-MD5 Authentication
+dev-perl/Mail-IMAPClient:ntlm - Install support for NTLM Authentication
+dev-perl/Mail-IMAPClient:ssl - Install support for SSL Connections
+dev-perl/Mail-IMAPClient:zlib - Install support for COMPRESS DEFLATE connections
+dev-perl/Net-OpenSSH:sftp - Enable SFTP protocol support.
+dev-perl/Net-SSH2:gcrypt - Use libgcrypt instead of openssl
+dev-perl/PDL:badval - Enable bad values support
+dev-perl/PDL:hdf - Enable HDF (version 4) format support
+dev-perl/PDL:netpbm - Enable NETPBM and MPEG support
+dev-perl/PDL:pdl2 - Build pdf2 shell (requires Devel-REPL)
+dev-perl/PDL:pgplot - Enable PGPLOT plotting capabilities
+dev-perl/PDL:plplot - Enable plplot plotting capabilities
+dev-perl/Panotools-Script:gui - Installs GUIs for some tools
+dev-perl/Sub-Name:suggested - Install extra dependencies needed for extended regression tests
+dev-perl/Sysadm-Install:hammer - Enable hammer() funtion to run a command in the shell and simulate a user hammering the ENTER key to accept defaults on prompts
+dev-perl/Test-Warnings:suggested - Install optional dependencies for extra tests
+dev-perl/perl-headers:debug - Add source locations in generated .ph files to assist with debugging when errors occur
+dev-perl/perl-headers:sizeof-warning - Include logic to warn when a .ph file tries to use a sizeof() that is unknown
