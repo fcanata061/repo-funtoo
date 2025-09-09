@@ -1,0 +1,12 @@
+DEFINED_PHASES=compile install unpack
+DEPEND=sys-libs/glibc[nscd(+)] virtual/pkgconfig
+DESCRIPTION=simple & stable nscd replacement
+EAPI=6
+HOMEPAGE=https://busybox.net/~vda/unscd/README
+KEYWORDS=~amd64 ~x86
+LICENSE=GPL-2
+RDEPEND=sys-libs/glibc[nscd(+)]
+SLOT=0
+SRC_URI=https://busybox.net/~vda/unscd/nscd-0.53.c
+_eclasses_=multilib	d410501a125f99ffb560b0c523cd3d1e	systemd	71fd8d2065d102753fb9e4d20eaf3e9f	toolchain-funcs	24921b57d6561d87cbef4916a296ada4
+_md5_=e304ccbc8f911312ad599805d7948329

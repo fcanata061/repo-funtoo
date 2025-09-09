@@ -1,0 +1,43 @@
+# This file is deprecated as per GLEP 56 in favor of metadata.xml. Please add
+# your descriptions to your package's metadata.xml ONLY.
+# * generated automatically using egencache *
+
+dev-lang/mlton:binary - install a binary version (need to do this once to bootstrap, until smlnj is supported)
+dev-lang/ocaml:flambda - Enables the Flambda optimizer: A new intermediate representation (introduced in ocaml 4.03) in the depths of the compiler designed to allow for better inlining.
+dev-lang/ocaml:spacetime - Enables the Spacetime memory profiler. See https://caml.inria.fr/pub/docs/manual-ocaml/spacetime.html for more information.
+dev-lang/polyml:portable - Build the portable interpreter version of Poly/ML instead of native
+dev-ml/cairo-ocaml:pango - Enable support for x11-libs/pango
+dev-ml/csv:lwt - Enables the Lwt-based library for asynchronous operations.
+dev-ml/dose3:parmap - Adds multi-core CPU support via dev-ml/parmap.
+dev-ml/dose3:rpm4 - Adds support for handling rpm4 files.
+dev-ml/dose3:zip - Adds support for handling zip files.
+dev-ml/eliom:ppx - Enable PPX syntax extension support.
+dev-ml/js_of_ocaml:camlp4 - Build with camlp4 syntax extensions.
+dev-ml/js_of_ocaml:deriving - Enable dev-ml/deriving support for improving the type safety.
+dev-ml/js_of_ocaml:lwt - Enable dev-ml/lwt support.
+dev-ml/js_of_ocaml:ppx - Enables the ppx syntax extension
+dev-ml/js_of_ocaml:react - Enable functionnal reactive programming support.
+dev-ml/lablgtk:glade - Enable libglade bindings compilation.
+dev-ml/lablgtk:gnomecanvas - Enable libgnomecanvas bindings compilation.
+dev-ml/lablgtk:sourceview - Enable GtkSourceView support
+dev-ml/logs:cli - Enables the Logs_cli library that provides command line support for controlling Logs.
+dev-ml/logs:fmt - Enables the Logs_fmt reporter.
+dev-ml/logs:lwt - Enables the Logs_lwt library that provides Lwt logging functions.
+dev-ml/lwt:camlp4 - Enable camlp4 syntax extension
+dev-ml/lwt:libev - Enable the dev-libs/libev-based backend.
+dev-ml/lwt:ppx - Enables the ppx syntax extension
+dev-ml/ocaml-cohttp:async - Enables support for the dev-ml/async asynchronous execution library.
+dev-ml/ocaml-cohttp:lwt - Enables support for the dev-ml/lwt cooperative light-weight thread library.
+dev-ml/ocaml-cstruct:async - Support for asynchronous execution
+dev-ml/ocaml-cstruct:lwt - Enable threads via lwt
+dev-ml/ocaml-cstruct:ppx - Enable the ppx syntax extension
+dev-ml/ocaml-websocket:async - Enables support for the dev-ml/async asynchronous execution library.
+dev-ml/ocaml-websocket:lwt - Enables support for the dev-ml/lwt cooperative light-weight thread library.
+dev-ml/ocamlnet:httpd - Enables net-httpd web server component
+dev-ml/ocamlnet:zip - Enables netzip support to read/write gzip data using object channels
+dev-ml/onanomsg:lwt - Enables lwt support.
+dev-ml/pgocaml:camlp4 - Enable PG'Ocaml syntax extension.
+dev-ml/tyxml:camlp4 - Enables the camlp4 syntax extension (deprecated)
+dev-ml/tyxml:ppx - Enables the ppx syntax extension (preferred)
+dev-ml/uutf:utftrip - Builds and install the utftrip executable: Among other things, reads unicode on stdin and rewrites it on stdout.
+dev-ml/zarith:mpir - Use MPIR library instead of GMP.

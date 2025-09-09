@@ -1,0 +1,14 @@
+DEFINED_PHASES=configure install postinst prepare
+DEPEND=dev-libs/glib:2 sys-apps/dbus virtual/libintl x11-libs/libX11 x11-libs/libgxim x11-libs/libnotify gconf? ( gnome-base/gconf ) gtk2? ( x11-libs/gtk+:2 ) !gtk2? ( x11-libs/gtk+:3 ) introspection? ( dev-libs/gobject-introspection ) xfconf? ( xfce-base/xfconf ) dev-util/glib-utils dev-util/intltool sys-devel/autoconf-archive sys-devel/gettext virtual/pkgconfig >=app-portage/elt-patches-20170815 !<sys-devel/gettext-0.18.1.1-r3 || ( >=sys-devel/automake-1.16.1:1.16 >=sys-devel/automake-1.15.1:1.15 ) >=sys-devel/autoconf-2.69 >=sys-devel/libtool-2.4
+DESCRIPTION=Delivery framework for general Input Method configuration
+EAPI=6
+HOMEPAGE=https://tagoh.bitbucket.io/imsettings
+IUSE=gconf gtk2 qt5 +introspection static-libs xfconf
+KEYWORDS=amd64 ~x86
+LICENSE=LGPL-2.1
+RDEPEND=dev-libs/glib:2 sys-apps/dbus virtual/libintl x11-libs/libX11 x11-libs/libgxim x11-libs/libnotify gconf? ( gnome-base/gconf ) gtk2? ( x11-libs/gtk+:2 ) !gtk2? ( x11-libs/gtk+:3 ) introspection? ( dev-libs/gobject-introspection ) xfconf? ( xfce-base/xfconf )
+RESTRICT=test
+SLOT=0
+SRC_URI=https://bitbucket.org/tagoh/imsettings/downloads/imsettings-1.7.2.tar.bz2
+_eclasses_=autotools	1bf086cdd7356f5c9a4acd9727bd2065	libtool	f143db5a74ccd9ca28c1234deffede96	multilib	d410501a125f99ffb560b0c523cd3d1e	toolchain-funcs	24921b57d6561d87cbef4916a296ada4	xdg-utils	14d00d009167652b1fa363e55effe213
+_md5_=f0efe701277fa89e6da2360ea12b786b

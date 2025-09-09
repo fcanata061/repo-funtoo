@@ -1,0 +1,14 @@
+DEFINED_PHASES=install nofetch setup unpack
+DEPEND=app-arch/unzip virtual/pkgconfig
+DESCRIPTION=Supermicro Thin-Agent Service for monitoring through the BMC/IPMI
+EAPI=6
+HOMEPAGE=https://www.supermicro.com
+IUSE=kernel_linux
+KEYWORDS=-* ~amd64 ~x86
+LICENSE=BSD supermicro
+RDEPEND=net-misc/networkmanager sys-apps/ethtool sys-apps/net-tools sys-apps/smartmontools sys-block/storcli sys-devel/bc sys-fs/lsscsi sys-fs/mdadm
+RESTRICT=bindist fetch mirror
+SLOT=0
+SRC_URI=TAS_1.5.2_build.180622.zip
+_eclasses_=eapi7-ver	756b3f27d8e46131d5cf3c51bd876446	linux-info	c90a203b1c14cfa77bd3e37a0e96c955	multilib	d410501a125f99ffb560b0c523cd3d1e	systemd	71fd8d2065d102753fb9e4d20eaf3e9f	toolchain-funcs	24921b57d6561d87cbef4916a296ada4
+_md5_=2d86fec63788c4caadd86c16cb53be9f

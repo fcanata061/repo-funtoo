@@ -1,0 +1,36 @@
+.. Important:: There is no need to use netif.d templates. You can use simple scripts to set up network. See the examples in /usr/share/doc/funtoo-netscripts-\*/
+
+core-netif differences
+======================
+
+In Funtoo Linux, the ``/etc/netif.d`` directory contains modular network configuration templates
+-------------------------------------------------------------------------------------------------
+
+The modular template system allows for simpler, purpose-built network interface
+configuration scripts to be created, rather than having a monolithic "one size
+fits all" universal network script as in Gentoo and OpenRC.  These
+lighter-weight network configuration scripts can be more easily read,
+understood -- and modified if desired. This approach is much more extensible.
+
+In Funtoo Linux, network interfaces must be added to your default runlevel to be enabled.
+-------------------------------------------------------------------------------------------
+
+.. Note:: There is an exception from this rule, ``net.lo`` which brings up loopback interface must be in ``boot`` runlevel.
+
+Gentoo Linux has the unfortunate behavior of starting **all** network
+interfaces and DHCP clients found in ``/etc/init.d`` when something needs
+``net``, whether or not you've added these network interfaces or DHCP clients
+to your current runlevel. This is due to the way the ``net`` initscript
+dependency is implemented, and works against the elegant, modular runlevel
+design of Gentoo and Funtoo initscripts. 
+
+In Funtoo Linux, if you want a network interface to be started in a runlevel,
+you must manually add it to that runlevel by typing::
+
+        # rc-update add net.eth0 default
+
+This allows different runlevels to have different network interfaces enabled or
+disabled.  In Funtoo Linux, ``dhcpcd`` also needs to be added to your current
+runlevel in order to enable it::
+
+        # rc-update add dhcpcd default
