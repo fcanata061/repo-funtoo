@@ -1,0 +1,6 @@
+2d.text.measure.advances
+Testing width advances
+Actual output:
+
+FAIL Testing width advances The string did not match the expected pattern.
+

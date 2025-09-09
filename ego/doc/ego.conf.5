@@ -1,0 +1,148 @@
+.\" Man page generated from reStructuredText.
+.
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.TH "EGO.CONF" 5 "" "2.8.7" "Funtoo Linux Core System"
+.SH NAME
+ego.conf \- Ego global configuration file
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+\fI/etc/ego.conf\fP
+.UNINDENT
+.UNINDENT
+.SH DESCRIPTION
+.sp
+The data in \fI/etc/ego.conf\fP is used by \fIego(8)\fP for configuration of kits and other settings relevant to ego commands.
+The configuration file format is similar to Microsoft Windows .INI files and is parsed by the Python ConfigParser
+module.
+.sp
+Sections are delimited with the literal format \fB[SECTIONNAME]\fP\&. Currently, the following sections are supported:
+\fIglobal\fP, \fIkits\fP\&. Values in each section are defined using the format \fBKEY = VALUE\fP, one per line.
+.SS Global Section
+.sp
+The \fIglobal\fP section supports the following configuration variables: \fIinstall_path\fP, \fIkits_path\fP, \fImeta_repo_path\fP,
+\fIsync_user\fP\&.
+.sp
+\fBinstall_path\fP
+.sp
+For developers, this allows one to specify an alternate location where ego is installed. This defaults to
+\fB/usr/share/ego\fP\&.
+.sp
+\fBkits_path\fP
+.sp
+Use this setting to specify the path to the kits directory used by meta\-repo. When set to a relative path, this path
+will be relative to \fImeta_repo_path\fP, but it can also be set to an absolute path, in which case it will be interpreted
+as\-is. The default settings for \fIkits_path\fP is \(dqkits\(dq.
+.sp
+\fBkits_depth\fP
+.sp
+This setting specifies the default depth to use when cloning a kit. The default is 2, which is the minimum functioning
+default when using Funtoo kits directly. If using a time\-delayed version of meta\-repo, this can be set to a custom
+value or set to 0, which will cause the kits to be cloned with complete history.
+.sp
+Note that in ego 2.4.0 and greater, when git\-depth data is detected in meta\-repo, this depth data will be used instead,
+and this setting has no effect unless set to 0, which will enable full history.
+.sp
+\fBmeta_repo_path\fP
+.sp
+This setting defines the directory that will house meta\-repo once cloned, and also where ego and Portage will look for
+meta\-repo. The default value for \fImeta_repo_path\fP is \fB/var/git/meta\-repo\fP\&.
+.sp
+\fBrepos_conf_path\fP
+.sp
+This setting specifies the directory which will be used to store generated repos.conf entries. By default, ego will
+generate repos.conf configuration files (and ensure they are updated) after an \fBego sync\fP operation. To differentiate
+ego\-generated repos.conf configuration files from user\-provided files, all ego\-generated files will have the prefix
+\fBego\-\fP\&. Also note that ego will take care of cleaning up (deleting) any \fBego\-\fP prefixed repos.conf entries that
+no longer exist in meta\-repo.
+.sp
+\fBsync_user\fP
+.sp
+This setting was deprecated as of ego 2.8.0 and is no longer used.
+This setting defined the user and group that are used to perform the sync operation, and thus the user and group which
+will end up owning the meta\-repo files. Now, the sync process can run as root or a regular user. When running as root,
+ego sync will read the group and user ownership of meta\-repo and use this user and group to perform sync operations.
+.sp
+\fBsync_base_url\fP
+.sp
+This setting defines the base URL to use for cloning of kits as well as meta\-repo. Default value is
+\fBhttps://github.com/funtoo/{repo}\fP\&. The \fB{repo}\fP value is replaced with the name of the kit or with the literal
+value \fBmeta\-repo\fP\&. Note that this setting only takes effect upon first clone, and if changed, you should remove
+eta\-repo and kits and perform an initial \fBego sync\fP to reinitialize the repositories. Also note that this
+setting can be overridden by using the \fBEGO_SYNC_BASE_URL\fP environment variable, which will take precedence over
+the configuration file setting/default if found.
+.SS Kits Section
+.sp
+The \fIkits\fP section is used to specify non\-default branches to use for Funtoo Linux kits. By default, \fBego\fP will use
+the \fIdefault\fP kit defined by Funtoo Linux BDFL. This information is stored in the \fBmetadata/kit\-info.json\fP in the
+meta\-repo directory. Users who would prefer to use alternate branches can override these selections as follows:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[kits]
+
+xorg\-kit = 1.19\-prime
+python\-kit = 3.6\-prime
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+After changing default kit values, be sure to run \fBego sync\fP to update meta\-repo to point to the correct kits. Also
+be sure to run \fBepro update\fP to regenerate your profile information (in some cases, this can be done manually by
+\fBego sync\fP).
+.sp
+To \fIomit\fP a kit from your meta\-repo, you can set the branch to \fBskip\fP\&. On next sync, this kit will not by synced
+nor will it be configured in your \fB/etc/portage/repos.conf\fP or \fB/etc/portage/make.profile/parent\fP\&.
+.SS Omitting Kits
+.sp
+If you want to instruct \fBego sync\fP to avoid syncing and enabling a particular kit, you can use the skip option,
+which is used as follows:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[kits]
+
+xorg\-kit = skip
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+It will then not be synced/updated over the network, and your \fB/etc/portage\fP kits configuration will be set up
+to not include this kit, even if it happens to exist in \fB/var/git/meta\-repo/kits\fP due to previously being
+enabled.
+.SH AUTHOR
+Daniel Robbins <drobbins@funtoo.org>
+.\" Generated by docutils manpage writer.
+.

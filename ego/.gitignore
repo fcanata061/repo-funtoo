@@ -1,0 +1,8 @@
+*.old
+
+### Python template
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+dist/
+.idea/
